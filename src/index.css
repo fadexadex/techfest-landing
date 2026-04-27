@@ -1,12 +1,18 @@
-@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap");
 @import "tailwindcss";
 
+/* Techfest palette (Figma): white, medium blue, indigo, sky — plus pure black canvas */
 @theme {
   --font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
   --font-display: "DM Sans", ui-sans-serif, system-ui, sans-serif;
-  --color-tech-bg: #111318;
-  --color-tech-accent: #0675b2;
-  --color-tech-soft: #98cbff;
+  --color-tech-white: #ffffff;
+  --color-tech-bg: #000000;
+  --color-tech-accent: #0580c3;
+  --color-tech-indigo: #2e368e;
+  --color-tech-sky: #68cbe2;
+  /* Back-compat: “soft” highlights = sky blue */
+  --color-tech-soft: #68cbe2;
+  /* Hero tagline / secondary body (Figma fill #C5C6D0) */
+  --color-tech-subtext: #c5c6d0;
 }
 
 @layer base {
@@ -17,10 +23,10 @@
   }
 
   body {
-    @apply min-h-dvh bg-tech-bg font-sans text-white;
+    @apply min-h-dvh bg-tech-bg font-sans text-tech-white;
     background-image:
-      radial-gradient(circle at top, rgba(6, 117, 178, 0.18), transparent 34%),
-      linear-gradient(180deg, #111318 0%, #111318 86%, #082538 100%);
+      radial-gradient(circle at top, rgba(5, 128, 195, 0.22), transparent 40%),
+      linear-gradient(180deg, #000000 0%, #000000 70%, rgba(46, 54, 142, 0.35) 100%);
     overflow-x: clip;
   }
 
@@ -30,11 +36,49 @@
   }
 
   :where(a, button) {
-    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-tech-soft
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-tech-sky
       focus-visible:ring-offset-2 focus-visible:ring-offset-tech-bg;
   }
 
   img {
     display: block;
+  }
+}
+
+/* Header Register — Frame 1 (Figma auto-layout, fixed frame size) */
+@layer components {
+  .btn-register {
+    box-sizing: border-box;
+    display: inline-flex;
+    flex-direction: row;
+    flex: none;
+    flex-grow: 0;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px;
+    width: 167px;
+    height: 41px;
+    border-radius: 12px;
+    background: linear-gradient(270deg, #407bff 0%, #68cbe2 45%, #0580c3 100%);
+    box-shadow:
+      0 74px 29px rgba(48, 128, 181, 0.01),
+      0 41px 25px rgba(48, 128, 181, 0.05),
+      0 18px 18px rgba(48, 128, 181, 0.09),
+      0 5px 10px rgba(48, 128, 181, 0.1);
+    color: #fff;
+    font-weight: 700;
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    line-height: 1;
+    text-transform: uppercase;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: filter 0.15s ease;
+  }
+
+  .btn-register:hover {
+    filter: brightness(1.06);
   }
 }

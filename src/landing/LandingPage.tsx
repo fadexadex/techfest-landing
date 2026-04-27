@@ -1,6 +1,25 @@
 import type { ReactNode } from 'react'
+import {
+  MomentPlaceholderSvg,
+  SpeakerPortraitSvg,
+  TeamPlaceholderSvg,
+} from './TechfestGraphics'
+
+const heroWordmarkImage = '/techfest/techfest-5-wordmark.png'
+/** Icon-only mark (keeps previous asset); paired with RUNTech Space wordmark in header */
+const headerGroupLogoMark = '/techfest/group-logo-mark.png'
 
 const aboutImage = '/techfest/2bc946c6-33c7-4315-b584-34a2ceae4bd0.png'
+
+/** WHAT TO EXPECT card art (`pngs/` → `public/techfest/expect/`) */
+const expectArt = {
+  keynote: '/techfest/expect/president.png',
+  panel: '/techfest/expect/debate.png',
+  networking: '/techfest/expect/network.png',
+  hackathon: '/techfest/expect/software-code.png',
+  exhibitors: '/techfest/expect/ice-cream.png',
+  games: '/techfest/expect/card.png',
+} as const
 
 const aboutStats = [
   { value: '1200+', label: 'ATTENDEES' },
@@ -106,26 +125,46 @@ function Shell({
   )
 }
 
+function HeaderBrandLockup() {
+  return (
+    <a
+      href="/"
+      className="relative flex min-w-0 flex-1 items-center gap-2 outline-none transition-opacity hover:opacity-95 sm:gap-3"
+      aria-label="RUN Tech Space — home"
+    >
+      <img
+        src={headerGroupLogoMark}
+        alt=""
+        width={41}
+        height={36}
+        className="h-9 w-auto shrink-0 object-contain object-left sm:h-10"
+        decoding="async"
+      />
+      <span className="flex min-w-0 flex-col items-start gap-0.5 leading-none">
+        <span className="inline-flex flex-wrap items-baseline gap-0 font-sans text-[clamp(1rem,4.5vw,1.375rem)] tracking-[-0.06em] sm:text-[22px]">
+          <span className="font-bold text-tech-accent">RUN</span>
+          <span className="font-normal text-tech-white">Tech</span>
+        </span>
+        <span className="font-sans text-[clamp(0.75rem,3vw,0.875rem)] font-normal tracking-normal text-tech-white">
+          Space
+        </span>
+      </span>
+    </a>
+  )
+}
+
 function EventLogo({ subtle = false }: { subtle?: boolean }) {
   return (
-    <div
-      className={`font-display leading-none tracking-[-0.05em] ${
-        subtle ? 'opacity-10' : 'text-white'
-      }`}
-      aria-label="Techfest 5.0"
-    >
-      <div className="relative flex items-start justify-center text-[clamp(3.5rem,11vw,8rem)] font-semibold">
-        <span className="relative">
-          Tech
-          <span className="text-tech-accent">fest</span>
-          <span className="absolute right-1 top-0 text-2xl text-white sm:-right-4 sm:-top-4 sm:text-3xl">*</span>
-          <span className="absolute right-7 top-8 text-lg text-white sm:right-8 sm:top-10 sm:text-2xl">*</span>
-        </span>
-      </div>
-      <div className="mt-1 text-center text-[clamp(1.7rem,4vw,3.4rem)] font-medium tracking-[-0.08em]">
-        5.0
-      </div>
-    </div>
+    <img
+      src={heroWordmarkImage}
+      alt="Techfest 5.0 — RUNTech Space"
+      width={1036}
+      height={581}
+      decoding="async"
+      loading={subtle ? 'lazy' : 'eager'}
+      fetchPriority={subtle ? 'low' : 'high'}
+      className={`mx-auto h-auto w-full max-w-[min(92vw,1036px)] ${subtle ? 'opacity-[0.14]' : ''}`}
+    />
   )
 }
 
@@ -174,20 +213,12 @@ function SpeakerCard({
 
   return (
     <article className="overflow-hidden rounded-[12px] bg-white/6 shadow-[0_8px_24px_rgba(0,0,0,0.2)] ring-1 ring-white/10">
-      <div
-        className={`relative flex h-[320px] items-end overflow-hidden bg-gradient-to-b ${accent} px-6 pb-6 md:h-[390px]`}
-      >
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(152,203,255,0.18),transparent_36%)]" />
-        <div className="absolute right-6 top-6 h-14 w-14 rounded-full border border-white/15 bg-white/6" />
-        <div className="absolute left-1/2 top-12 h-24 w-24 -translate-x-1/2 rounded-full bg-white/85 text-[2rem] font-semibold tracking-[-0.08em] text-slate-900 flex items-center justify-center">
-          {initials}
-        </div>
-        <div className="absolute bottom-0 left-1/2 h-[58%] w-[44%] -translate-x-1/2 rounded-t-[999px] bg-[linear-gradient(180deg,rgba(255,255,255,0.9),rgba(215,225,234,0.78))]" />
-        <div className="absolute bottom-[28%] left-1/2 h-6 w-[30%] -translate-x-1/2 rounded-full bg-slate-800/18" />
-        <div className="absolute bottom-4 left-6 rounded-full border border-white/15 bg-black/18 px-3 py-1 text-[10px] uppercase tracking-[0.28em] text-white/70">
-          Speaker
-        </div>
-      </div>
+      <SpeakerPortraitSvg
+        initials={initials}
+        accentFrom={accent.match(/from-\[(#[0-9A-Fa-f]{6})\]/)?.[1] ?? '#41576d'}
+        accentTo={accent.match(/to-\[(#[0-9A-Fa-f]{6})\]/)?.[1] ?? '#161d23'}
+        className="h-[320px] w-full md:h-[390px]"
+      />
       <div className="flex items-start justify-between gap-4 bg-white/7 px-4 py-5">
         <div>
           <h3 className="text-[1.15rem] font-medium text-white">{name}</h3>
@@ -204,33 +235,37 @@ function TeamCard({
   image,
   name,
   role,
-  index,
 }: {
   image?: string
   name: string
   role: string
-  index: number
 }) {
   return (
     <article className="overflow-hidden rounded-[12px] bg-[#111f2c] ring-1 ring-white/8">
       {image ? (
         <img src={image} alt={name} className="h-[300px] w-full object-cover" loading="lazy" />
       ) : (
-        <div
-          className={`flex h-[300px] items-end bg-[radial-gradient(circle_at_top,rgba(6,117,178,0.7),transparent_45%),linear-gradient(180deg,#22384a_0%,#0f161f_100%)] p-6 ${
-            index % 2 === 0 ? 'justify-start' : 'justify-end'
-          }`}
-        >
-          <div className="rounded-full border border-white/12 bg-white/8 px-5 py-2 text-xs uppercase tracking-[0.35em] text-white/70">
-            TechFest Team
-          </div>
-        </div>
+        <TeamPlaceholderSvg className="h-[300px] w-full" />
       )}
       <div className="bg-[rgba(255,255,255,0.05)] px-5 py-4 text-center">
         <h3 className="text-lg font-medium text-white">{name}</h3>
         <p className="text-sm text-white/78">{role}</p>
       </div>
     </article>
+  )
+}
+
+function ExpectArt({ src, alt, className = '' }: { src: string; alt: string; className?: string }) {
+  return (
+    <img
+      src={src}
+      alt={alt}
+      aria-hidden={alt === '' ? true : undefined}
+      loading="lazy"
+      decoding="async"
+      draggable={false}
+      className={`pointer-events-none absolute bottom-0 right-0 object-contain object-right-bottom select-none ${className}`}
+    />
   )
 }
 
@@ -241,6 +276,7 @@ function ExpectCard({
   className = '',
   titleClassName = '',
   descriptionClassName = '',
+  contentClassName = '',
   children,
 }: {
   title: string
@@ -249,55 +285,54 @@ function ExpectCard({
   className?: string
   titleClassName?: string
   descriptionClassName?: string
+  contentClassName?: string
   children: ReactNode
 }) {
   return (
     <article
-      className={`relative overflow-hidden rounded-[12px] p-8 ring-1 ring-black/15 ${tone} ${className}`}
+      className={`relative min-w-0 overflow-hidden rounded-[12px] p-5 ring-1 ring-black/15 sm:p-7 lg:p-8 ${tone} ${className}`}
     >
-      <div className="relative z-10 max-w-[21rem]">
+      {/* pb-* or pr-* reserves space so copy wraps around illustration */}
+      <div className={`relative z-10 min-w-0 w-full max-w-full text-pretty ${contentClassName}`}>
         <h3
-          className={`max-w-[14ch] text-[2rem] font-semibold uppercase leading-none tracking-[-0.04em] text-white ${titleClassName}`}
+          className={`text-[clamp(1.125rem,2.8vw,1.45rem)] font-medium uppercase leading-[1.2] tracking-[0.01em] text-white sm:leading-[1.15] ${titleClassName}`}
         >
           {title}
         </h3>
-        <p className={`mt-4 text-base leading-7 text-white/78 ${descriptionClassName}`}>
+        <p
+          className={`mt-2.5 text-[0.8125rem] leading-relaxed sm:mt-3.5 sm:text-sm sm:leading-[1.6] ${descriptionClassName || 'text-white/80'}`}
+        >
           {description}
         </p>
       </div>
-      <div className="pointer-events-none absolute inset-0">{children}</div>
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">{children}</div>
     </article>
   )
 }
 
 export function LandingPage() {
   return (
-    <div className="relative overflow-hidden bg-tech-bg text-white">
+    <div className="relative overflow-hidden bg-tech-bg text-tech-white">
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-0 h-[720px] bg-[radial-gradient(circle_at_top,rgba(6,117,178,0.32),transparent_50%)]"
+        className="pointer-events-none absolute inset-x-0 top-0 h-[720px] bg-[radial-gradient(circle_at_top,rgba(5,128,195,0.28),transparent_50%)]"
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-[42rem] h-[1000px] bg-[radial-gradient(circle_at_center,rgba(152,203,255,0.08),transparent_52%)]"
+        className="pointer-events-none absolute inset-x-0 top-[42rem] h-[1000px] bg-[radial-gradient(circle_at_center,rgba(104,203,226,0.1),transparent_52%)]"
       />
       <a
         href="#main-content"
-        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-tech-accent focus:px-4 focus:py-2 focus:text-black"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-tech-accent focus:px-4 focus:py-2 focus:text-tech-white"
       >
         Skip to content
       </a>
 
       <header className="relative pt-10 sm:pt-14">
         <Shell>
-          <div className="flex items-center justify-between gap-6">
-            <div className="text-sm font-medium tracking-[-0.03em] text-white/88">
-              <span className="text-tech-accent">R</span> Techfest 5.0
-            </div>
-            <a
-              href="#register"
-              className="inline-flex items-center rounded-full bg-[#98cbff] px-4 py-2 text-xs font-semibold uppercase tracking-[0.25em] text-black transition hover:scale-[1.02]"
-            >
+          <div className="flex min-w-0 items-center justify-between gap-4 sm:gap-6">
+            <HeaderBrandLockup />
+            <a href="#register" className="btn-register shrink-0">
               Register now
             </a>
           </div>
@@ -308,7 +343,7 @@ export function LandingPage() {
         <Shell className="pt-14 text-center sm:pt-20">
           <div className="mx-auto max-w-[1243px]">
             <EventLogo />
-            <p className="mx-auto mt-7 max-w-[56rem] text-balance text-sm leading-7 text-white/72 sm:text-lg">
+            <p className="mx-auto mt-7 max-w-[56rem] text-pretty px-3 text-center font-sans text-[clamp(1rem,4vw,1.875rem)] font-normal leading-snug tracking-normal text-tech-subtext sm:mt-8 sm:px-6 sm:leading-relaxed">
               Experience a fusion of innovation, creativity, and community through immersive
               sessions, hands-on learning, and meaningful connections.
             </p>
@@ -319,7 +354,7 @@ export function LandingPage() {
           <div className="grid gap-12 xl:grid-cols-[660px_minmax(0,1fr)] xl:items-end">
             <div>
               <p className="text-2xl text-white/78">About Techfest</p>
-              <h2 className="mt-2 text-4xl font-semibold tracking-[-0.05em] sm:text-5xl">
+              <h2 className="mt-2 text-[clamp(1.625rem,5vw,3rem)] font-semibold tracking-[-0.05em]">
                 WHERE INNOVATION <span className="text-tech-accent">MEET TALENT</span>
               </h2>
               <img
@@ -340,7 +375,7 @@ export function LandingPage() {
               </div>
 
               <div className="grid gap-6 lg:grid-cols-2">
-                <article className="rounded-[12px] bg-[#98cbff] px-7 py-6 text-black">
+                <article className="rounded-[12px] bg-tech-soft px-7 py-6 text-black">
                   <h3 className="text-xl font-medium">What is TechFest?</h3>
                   <p className="mt-3 text-base leading-7 text-black/78">
                     TechFest is Redeemer&apos;s University&apos;s annual celebration of technology,
@@ -370,131 +405,112 @@ export function LandingPage() {
           </div>
         </Shell>
 
-        <Shell className="pt-24 sm:pt-32">
-          <div className="mx-auto max-w-[945px] text-center">
-            <h2 className="text-4xl font-semibold tracking-[-0.05em] sm:text-5xl">WHAT TO EXPECT</h2>
-            <p className="mt-4 text-base leading-7 text-white/70 sm:text-lg">
-              A mix of inspiring sessions, practical learning, meaningful connections, and exciting
-              experiences all in one place.
+        <Shell className="min-w-0 pt-24 sm:pt-32">
+          <div className="mx-auto max-w-[945px] px-3 text-center sm:px-4">
+            <h2 className="text-balance text-[clamp(1.5rem,6vw,3rem)] font-bold uppercase leading-[1.08] tracking-[-0.05em]">
+              <span className="text-tech-white">WHAT </span>
+              <span className="text-[#0675b2]">TO EXPECT</span>
+            </h2>
+            <p className="mx-auto mt-4 max-w-[52ch] text-pretty text-[clamp(0.875rem,2.5vw,0.9375rem)] font-normal leading-relaxed text-tech-subtext [overflow-wrap:anywhere] sm:mt-4 md:max-w-[80ch]">
+              A mix of inspiring sessions, practical learning, meaningful connections, and exciting experiences all in one place.
             </p>
           </div>
 
-          <div className="mt-16 grid gap-6 xl:grid-cols-12 xl:grid-rows-[minmax(0,1fr)_minmax(0,1fr)]">
+          <div className="mt-10 grid min-w-0 auto-rows-auto gap-4 sm:mt-12 sm:gap-6 xl:[grid-template-columns:repeat(12,minmax(0,1fr))] xl:grid-rows-[auto_auto_auto] xl:gap-x-7 xl:gap-y-7 xl:[&>article]:min-w-0">
             <ExpectCard
               title="KEYNOTE SPEAKERS"
               description="Hear from leading voices in tech as they share valuable insights, emerging trends, and real-world experiences shaping the future."
-              tone="bg-[#5d4475]"
-              className="min-h-[430px] xl:col-span-4 xl:row-span-2"
+              tone="bg-[linear-gradient(180deg,#181523_0%,#452a55_100%)]"
+              className="min-h-[280px] sm:min-h-[380px] xl:col-span-4 xl:col-start-1 xl:row-span-2 xl:row-start-1 xl:min-h-[500px]"
+              contentClassName="pb-[45%] sm:pb-[40%] xl:pb-0 xl:max-w-[85%]"
+              titleClassName="text-[#dea0bd]"
+              descriptionClassName="text-tech-subtext"
             >
-              <div className="absolute inset-x-0 bottom-0 h-[58%] bg-[linear-gradient(180deg,rgba(255,255,255,0)_0%,rgba(31,10,49,0.65)_22%,rgba(31,10,49,0.95)_100%)]" />
-              <div className="absolute right-8 top-8 h-4 w-4 rounded-full bg-white" />
-              <div className="absolute right-20 top-16 h-2.5 w-2.5 rounded-full bg-white/80" />
-              <div className="absolute bottom-24 left-1/2 h-52 w-52 -translate-x-1/2 rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.2),transparent_66%)]" />
-              <div className="absolute bottom-0 left-1/2 h-[48%] w-40 -translate-x-1/2 rounded-t-[999px] bg-[linear-gradient(180deg,#2a183c_0%,#d99cf5_100%)] shadow-[0_0_0_1px_rgba(255,255,255,0.08)]" />
-              <div className="absolute bottom-[27%] left-1/2 h-20 w-20 -translate-x-1/2 rounded-full bg-[#1a1024]" />
-              <div className="absolute bottom-[17%] left-1/2 h-28 w-28 -translate-x-1/2 rounded-t-[999px] bg-[#2b1b40]" />
+              <ExpectArt
+                src={expectArt.keynote}
+                alt=""
+                className="max-h-[42%] w-auto max-w-[min(90%,340px)] xl:bottom-0 xl:right-1/2 xl:translate-x-1/2 xl:max-h-[60%] xl:max-w-[min(90%,360px)]"
+              />
             </ExpectCard>
 
             <ExpectCard
               title="PANEL DISCUSSION"
               description="Be part of interactive discussions as industry voices share ideas, experiences, and different perspectives on the future of tech."
-              tone="bg-[#163f91]"
-              className="min-h-[380px] xl:col-span-5"
+              tone="bg-[linear-gradient(90deg,#121c32_0%,#1a3b7c_100%)]"
+              className="min-h-[260px] sm:min-h-[340px] xl:col-span-8 xl:col-start-5 xl:row-start-1 xl:min-h-[280px] xl:flex xl:flex-col xl:justify-center"
+              contentClassName="pb-[45%] sm:pb-[38%] xl:pb-0 xl:max-w-[40%] xl:ml-auto xl:-mt-2"
+              titleClassName="text-[#5c8def]"
+              descriptionClassName="text-tech-subtext"
             >
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_22%,rgba(152,203,255,0.22),transparent_26%),linear-gradient(180deg,rgba(9,18,38,0)_0%,rgba(9,18,38,0.28)_35%,rgba(9,18,38,0.7)_100%)]" />
-              <div className="absolute right-8 top-10 rounded-2xl bg-white/90 px-5 py-3 text-xs font-medium uppercase tracking-[0.22em] text-[#163f91] shadow-lg shadow-black/15">
-                Live ideas
-              </div>
-              <div className="absolute left-[16%] top-[34%] h-20 w-20 rounded-full bg-[#e7efff]" />
-              <div className="absolute right-[18%] top-[34%] h-20 w-20 rounded-full bg-[#a6c5ff]" />
-              <div className="absolute bottom-0 left-[12%] h-[34%] w-[22%] rounded-t-[999px] bg-[#f7f9ff]" />
-              <div className="absolute bottom-0 right-[14%] h-[34%] w-[22%] rounded-t-[999px] bg-[#9bbcf7]" />
-              <div className="absolute bottom-[26%] left-[15%] h-3 w-[18%] rounded-full bg-white/70" />
-              <div className="absolute bottom-[26%] right-[17%] h-3 w-[18%] rounded-full bg-white/45" />
-            </ExpectCard>
-
-            <ExpectCard
-              title="LEARN & BUILD"
-              description="Explore emerging tech trends and sharpen practical skills through hands-on workshops and live sessions."
-              tone="bg-[#34404a]"
-              className="min-h-[380px] xl:col-span-3"
-            >
-              <div className="absolute inset-x-4 bottom-4 top-28 rounded-[18px] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.1),rgba(255,255,255,0.02))]" />
-              <div className="absolute inset-x-10 top-32 h-4 rounded-full bg-white/12" />
-              <div className="absolute inset-x-10 top-[10.5rem] h-2 rounded-full bg-tech-soft/50" />
-              <div className="absolute inset-x-10 top-[12.5rem] h-2 rounded-full bg-white/25" />
-              <div className="absolute inset-x-10 top-[14.5rem] h-2 rounded-full bg-white/25" />
-              <div className="absolute left-10 top-[16.75rem] h-16 w-16 rounded-2xl bg-tech-soft/18 ring-1 ring-white/10" />
-              <div className="absolute right-10 top-[16.75rem] h-20 w-24 rounded-2xl bg-black/18 ring-1 ring-white/10" />
+              <ExpectArt
+                src={expectArt.panel}
+                alt=""
+                className="max-h-[40%] w-auto max-w-[min(88%,320px)] xl:bottom-0 xl:left-8 xl:right-auto xl:max-h-[92%] xl:max-w-[50%]"
+              />
             </ExpectCard>
 
             <ExpectCard
               title="NETWORKING"
               description="Connect with like-minded students, professionals, and future collaborators."
-              tone="bg-[#123048]"
-              className="min-h-[320px] xl:col-span-4"
+              tone="bg-[linear-gradient(180deg,#101b2a_0%,#0a2240_100%)]"
+              className="min-h-[240px] sm:min-h-[300px] xl:col-span-4 xl:col-start-5 xl:row-start-2 xl:min-h-[240px]"
+              contentClassName="pb-[35%] sm:pb-[28%] xl:pb-[32%] xl:max-w-[90%]"
+              titleClassName="text-[#4198cc]"
+              descriptionClassName="text-tech-subtext"
             >
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_18%,rgba(152,203,255,0.2),transparent_28%)]" />
-              <div className="absolute left-[13%] top-[24%] rounded-full bg-white px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.24em] text-[#123048]">
-                Meet
-              </div>
-              <div className="absolute left-[38%] top-[17%] rounded-full bg-tech-soft px-5 py-2 text-[10px] font-semibold uppercase tracking-[0.24em] text-[#123048]">
-                Connect
-              </div>
-              <div className="absolute right-[15%] top-[23%] rounded-full bg-white/85 px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.24em] text-[#123048]">
-                Grow
-              </div>
-              <div className="absolute bottom-0 left-[8%] h-[32%] w-[16%] rounded-t-[999px] bg-[#93b9f7]" />
-              <div className="absolute bottom-0 left-[25%] h-[36%] w-[18%] rounded-t-[999px] bg-[#d6f0ff]" />
-              <div className="absolute bottom-0 right-[25%] h-[34%] w-[16%] rounded-t-[999px] bg-[#f2f6ff]" />
-              <div className="absolute bottom-0 right-[9%] h-[30%] w-[15%] rounded-t-[999px] bg-[#9fcaf8]" />
+              <ExpectArt
+                src={expectArt.networking}
+                alt=""
+                className="max-h-[38%] w-auto max-w-[min(85%,300px)] xl:bottom-3 xl:right-1/2 xl:translate-x-1/2 xl:max-h-[45%] xl:max-w-[80%]"
+              />
             </ExpectCard>
 
             <ExpectCard
               title="HACKATHON & IDEATION SESSION"
               description="Brainstorm innovative ideas, collaborate with a team, build real solutions, and compete in a fast-paced challenge with meaningful impact."
-              tone="bg-[#9bc7ef] text-black"
-              className="min-h-[320px] xl:col-span-4"
-              titleClassName="text-[#10263f]"
-              descriptionClassName="text-[#10263f]/78"
+              tone="bg-[linear-gradient(135deg,#1a232c_0%,#12171c_100%)]"
+              className="min-h-[260px] sm:min-h-[320px] xl:col-span-4 xl:col-start-9 xl:row-start-2 xl:min-h-[320px]"
+              contentClassName="pb-[40%] sm:pb-[35%] xl:pb-[45%] xl:max-w-[90%]"
+              titleClassName="text-[#a5cbe5]"
+              descriptionClassName="text-tech-subtext"
             >
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.3),transparent_35%)]" />
-              <div className="absolute bottom-10 right-8 h-28 w-40 rounded-[18px] bg-[#f6fbff] shadow-[0_24px_40px_rgba(16,38,63,0.18)] ring-1 ring-[#10263f]/10" />
-              <div className="absolute bottom-16 right-14 h-3 w-20 rounded-full bg-[#10263f]/20" />
-              <div className="absolute bottom-12 right-14 h-3 w-28 rounded-full bg-[#10263f]/12" />
-              <div className="absolute bottom-12 left-10 h-24 w-24 rounded-t-[999px] bg-[#315b87]" />
-              <div className="absolute bottom-12 left-28 h-24 w-24 rounded-t-[999px] bg-[#1c3a56]" />
-              <div className="absolute left-10 top-28 h-12 w-12 rotate-12 rounded-xl bg-white/70" />
-              <div className="absolute left-[6.5rem] top-34 h-14 w-14 -rotate-6 rounded-xl bg-[#4f83b5]/40" />
+              <ExpectArt
+                src={expectArt.hackathon}
+                alt=""
+                className="max-h-[42%] w-auto max-w-[min(88%,320px)] xl:bottom-4 xl:right-4 xl:max-h-[45%] xl:max-w-[85%]"
+              />
             </ExpectCard>
 
             <ExpectCard
               title="EXHIBITORS & FOOD VENDORS"
-              description="Discover cool tech, meet amazing brands, and enjoy a wide variety of great food in one lively space."
-              tone="bg-[#65549a]"
-              className="min-h-[320px] xl:col-span-4"
+              description="Discover cool tech, meet amazing brands, and enjoy a wide variety of great food — all in one lively space where innovation, connection, and experience come together."
+              tone="bg-[linear-gradient(90deg,#1b1c31_0%,#322353_100%)]"
+              className="min-h-[260px] sm:min-h-[320px] xl:col-span-8 xl:col-start-1 xl:row-start-3 xl:min-h-[280px] xl:flex xl:flex-col xl:justify-center"
+              contentClassName="pb-[45%] sm:pb-[38%] xl:pb-0 xl:max-w-[45%]"
+              titleClassName="text-[#9d8ed3]"
+              descriptionClassName="text-tech-subtext"
             >
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_22%,rgba(255,255,255,0.24),transparent_26%)]" />
-              <div className="absolute bottom-10 left-8 h-24 w-44 rounded-t-[22px] bg-[#ffca89]" />
-              <div className="absolute bottom-32 left-8 flex gap-2">
-                <span className="h-8 w-10 rounded-t-lg bg-white/90" />
-                <span className="h-8 w-10 rounded-t-lg bg-[#ffd4b1]" />
-                <span className="h-8 w-10 rounded-t-lg bg-white/90" />
-                <span className="h-8 w-10 rounded-t-lg bg-[#ffd4b1]" />
-              </div>
-              <div className="absolute bottom-0 right-12 h-[32%] w-[22%] rounded-t-[999px] bg-[#f7ebff]" />
+              <ExpectArt
+                src={expectArt.exhibitors}
+                alt=""
+                className="max-h-[45%] w-auto max-w-[min(88%,320px)] xl:bottom-0 xl:right-[6%] xl:max-h-[85%] xl:max-w-[45%]"
+              />
             </ExpectCard>
 
             <ExpectCard
               title="GAMES & ENTERTAINMENT"
               description="Enjoy fun games and interactive experiences in one lively, high-energy space."
-              tone="bg-[#8a4a63]"
-              className="min-h-[320px] xl:col-span-4"
+              tone="bg-[linear-gradient(135deg,#20181b_0%,#462232_100%)]"
+              className="min-h-[260px] sm:min-h-[300px] xl:col-span-4 xl:col-start-9 xl:row-start-3 xl:min-h-[260px]"
+              contentClassName="pb-[35%] sm:pb-[30%] xl:pb-[35%] xl:max-w-[90%]"
+              titleClassName="text-[#df93a9]"
+              descriptionClassName="text-tech-subtext"
             >
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_18%,rgba(255,255,255,0.18),transparent_26%)]" />
-              <div className="absolute bottom-10 left-[14%] h-28 w-20 rotate-[-12deg] rounded-xl bg-white shadow-[0_14px_32px_rgba(0,0,0,0.24)]" />
-              <div className="absolute bottom-12 left-[28%] h-28 w-20 rotate-[10deg] rounded-xl bg-[#ffd9e6] shadow-[0_14px_32px_rgba(0,0,0,0.24)]" />
-              <div className="absolute right-[14%] top-[28%] h-16 w-16 rounded-full border-8 border-white/85 bg-[#f4a6c4]" />
+              <ExpectArt
+                src={expectArt.games}
+                alt=""
+                className="max-h-[40%] w-auto max-w-[min(85%,300px)] xl:bottom-4 xl:right-4 xl:max-h-[45%] xl:max-w-[60%]"
+              />
             </ExpectCard>
           </div>
         </Shell>
@@ -527,7 +543,7 @@ export function LandingPage() {
           </h2>
           <div className="mt-12 grid gap-8 sm:grid-cols-2 xl:grid-cols-4">
             {teamCards.map((member, index) => (
-              <TeamCard key={`team-${index}`} index={index} {...member} />
+              <TeamCard key={`team-${index}`} {...member} />
             ))}
           </div>
         </Shell>
@@ -553,17 +569,8 @@ export function LandingPage() {
                     </div>
                   </div>
                 ) : (
-                  <div
-                    aria-label={moment.alt}
-                    className={`relative h-[320px] w-full rounded-[12px] bg-gradient-to-br ${moment.accent} sm:h-[424px]`}
-                  >
-                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(152,203,255,0.2),transparent_36%)]" />
-                    <div className="absolute left-5 top-5 rounded-full bg-white/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.24em] text-white/80">
-                      {moment.eyebrow}
-                    </div>
-                    <div className="absolute bottom-6 left-6 right-6 h-px bg-white/20" />
-                    <div className="absolute bottom-9 left-6 h-16 w-16 rounded-full border border-white/18 bg-white/6" />
-                    <div className="absolute bottom-9 right-6 h-24 w-24 rounded-full border border-white/18 bg-white/6" />
+                  <div role="img" aria-label={moment.alt}>
+                    <MomentPlaceholderSvg eyebrow={moment.eyebrow} className="h-[320px] w-full sm:h-[424px]" />
                   </div>
                 )}
               </div>
@@ -572,13 +579,22 @@ export function LandingPage() {
         </Shell>
       </main>
 
-      <footer className="relative overflow-hidden bg-[linear-gradient(180deg,#111318_0%,#082538_100%)] py-20">
+      <footer className="relative overflow-hidden py-20 pb-32 sm:pb-40">
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(152,203,255,0.12),transparent_50%)]"
+          className="pointer-events-none absolute inset-0 z-0 bg-[#020617] bg-cover bg-center bg-no-repeat"
+          style={{ backgroundImage: "url('/techfest/footer-bg.png')" }}
         />
-        <div className="relative mx-auto flex max-w-[883px] items-center justify-center px-6 text-center">
-          <EventLogo subtle />
+        <div className="relative z-10 mx-auto flex max-w-[883px] items-center justify-center px-6 text-center">
+          <img
+            src="/techfest%205.0.png"
+            alt="Techfest 5.0"
+            width={1036}
+            height={581}
+            loading="lazy"
+            decoding="async"
+            className="mx-auto h-auto w-full max-w-[min(92vw,1036px)] opacity-[0.15] mix-blend-screen"
+          />
         </div>
       </footer>
     </div>
