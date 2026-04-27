@@ -1,0 +1,40 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap");
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+  --color-tech-bg: #111318;
+  --color-tech-accent: #0675b2;
+  --color-tech-soft: #98cbff;
+}
+
+@layer base {
+  html {
+    @apply antialiased;
+    scroll-behavior: smooth;
+    overflow-x: clip;
+  }
+
+  body {
+    @apply min-h-dvh bg-tech-bg font-sans text-white;
+    background-image:
+      radial-gradient(circle at top, rgba(6, 117, 178, 0.18), transparent 34%),
+      linear-gradient(180deg, #111318 0%, #111318 86%, #082538 100%);
+    overflow-x: clip;
+  }
+
+  #root {
+    min-height: 100dvh;
+    overflow-x: clip;
+  }
+
+  :where(a, button) {
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-tech-soft
+      focus-visible:ring-offset-2 focus-visible:ring-offset-tech-bg;
+  }
+
+  img {
+    display: block;
+  }
+}
