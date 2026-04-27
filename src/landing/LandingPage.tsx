@@ -67,20 +67,6 @@ const speakerCards = [
   },
 ]
 
-const teamCards = [
-  { name: 'Mr. Sam', role: 'Staff Advisor' },
-  { name: 'Akinwale Aremu', role: 'President' },
-  { name: 'Bolujo Joseph', role: 'Vice President' },
-  { name: 'Ayomide Arimoro', role: 'General Secretary' },
-  { name: 'Blossom Ubochi', role: 'Public Relations Officer' },
-  { name: 'Ifeoluwa Omidire', role: 'Programs & Strategy Lead' },
-  { name: 'Emmanuel Latunde', role: 'Partnership Lead' },
-  { name: 'Godbless Peter', role: 'Technical Lead' },
-  { name: 'Fadehan Daniel', role: 'Assistant Technical Lead' },
-  { name: 'Nnadozie Destiny', role: 'Creative Director' },
-  { name: 'Enoch Abe', role: 'Assistant Creative Director' },
-  { name: 'Peace Amudipe', role: 'Welfare Director' },
-]
 
 const moments = [
   {
