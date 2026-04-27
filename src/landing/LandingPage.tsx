@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
-
+import { TeamSlider } from './sections/TeamSlider'
+import { SponsorsSlider } from './sections/SponsorsSlider'
 const aboutImage = '/techfest/2bc946c6-33c7-4315-b584-34a2ceae4bd0.png'
 
 const aboutStats = [
@@ -48,20 +49,6 @@ const speakerCards = [
   },
 ]
 
-const teamCards = [
-  { name: 'Mr. Sam', role: 'Staff Advisor' },
-  { name: 'Akinwale Aremu', role: 'President' },
-  { name: 'Bolujo Joseph', role: 'Vice President' },
-  { name: 'Ayomide Arimoro', role: 'General Secretary' },
-  { name: 'Blossom Ubochi', role: 'Public Relations Officer' },
-  { name: 'Ifeoluwa Omidire', role: 'Programs & Strategy Lead' },
-  { name: 'Emmanuel Latunde', role: 'Partnership Lead' },
-  { name: 'Godbless Peter', role: 'Technical Lead' },
-  { name: 'Fadehan Daniel', role: 'Assistant Technical Lead' },
-  { name: 'Nnadozie Destiny', role: 'Creative Director' },
-  { name: 'Enoch Abe', role: 'Assistant Creative Director' },
-  { name: 'Peace Amudipe', role: 'Welfare Director' },
-]
 
 const moments = [
   {
@@ -200,39 +187,6 @@ function SpeakerCard({
   )
 }
 
-function TeamCard({
-  image,
-  name,
-  role,
-  index,
-}: {
-  image?: string
-  name: string
-  role: string
-  index: number
-}) {
-  return (
-    <article className="overflow-hidden rounded-[12px] bg-[#111f2c] ring-1 ring-white/8">
-      {image ? (
-        <img src={image} alt={name} className="h-[300px] w-full object-cover" loading="lazy" />
-      ) : (
-        <div
-          className={`flex h-[300px] items-end bg-[radial-gradient(circle_at_top,rgba(6,117,178,0.7),transparent_45%),linear-gradient(180deg,#22384a_0%,#0f161f_100%)] p-6 ${
-            index % 2 === 0 ? 'justify-start' : 'justify-end'
-          }`}
-        >
-          <div className="rounded-full border border-white/12 bg-white/8 px-5 py-2 text-xs uppercase tracking-[0.35em] text-white/70">
-            TechFest Team
-          </div>
-        </div>
-      )}
-      <div className="bg-[rgba(255,255,255,0.05)] px-5 py-4 text-center">
-        <h3 className="text-lg font-medium text-white">{name}</h3>
-        <p className="text-sm text-white/78">{role}</p>
-      </div>
-    </article>
-  )
-}
 
 function ExpectCard({
   title,
@@ -525,10 +479,17 @@ export function LandingPage() {
           <h2 className="text-center text-4xl font-semibold tracking-[-0.05em] sm:text-5xl">
             THE MINDS BEHIND <span className="text-tech-accent">IT</span>
           </h2>
-          <div className="mt-12 grid gap-8 sm:grid-cols-2 xl:grid-cols-4">
-            {teamCards.map((member, index) => (
-              <TeamCard key={`team-${index}`} index={index} {...member} />
-            ))}
+          <div className="mt-12">
+            <TeamSlider />
+          </div>
+        </Shell>
+
+        <Shell className="pt-24 sm:pt-28">
+          <h2 className="text-center text-4xl font-semibold tracking-[-0.05em] sm:text-5xl">
+            OUR <span className="text-tech-accent">SPONSORS</span>
+          </h2>
+          <div className="mt-12">
+            <SponsorsSlider />
           </div>
         </Shell>
 
