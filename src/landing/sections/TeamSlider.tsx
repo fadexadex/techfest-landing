@@ -1,10 +1,15 @@
-import { useRef, useState, type PointerEvent } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
+
+/** Match `w-[220px]` + Tailwind `gap-5` (1.25rem → 20px at default root). */
+const CARD_WIDTH_PX = 220
+const GAP_PX = 20
+const SLOT_PX = CARD_WIDTH_PX + GAP_PX
 
 const teamCards = [
   { name: 'Mr. Sam', role: 'Staff Advisor' },
   { name: 'Akinwale Aremu', role: 'President' },
   { name: 'Bolujo Joseph', role: 'Vice President' },
-  { name: 'Ayomide Arimoro', role: 'General Secretary' },
+  { name: 'Ayomide Arimoro', role: 'President' },
   { name: 'Blossom Ubochi', role: 'Public Relations Officer' },
   { name: 'Ifeoluwa Omidire', role: 'Programs & Strategy Lead' },
   { name: 'Emmanuel Latunde', role: 'Partnership Lead' },
@@ -14,6 +19,9 @@ const teamCards = [
   { name: 'Enoch Abe', role: 'Assistant Creative Director' },
   { name: 'Peace Amudipe', role: 'Welfare Director' },
 ]
+
+const USER_PAUSE_MS = 10_000
+const EDGE_EPS = 4
 
 function TeamCard({
   image,
@@ -27,9 +35,12 @@ function TeamCard({
   index: number
 }) {
   return (
-    <article className="flex-none w-[220px] overflow-hidden rounded-[12px] bg-[#111f2c] ring-1 ring-white/8 select-none">
+    <article
+      className="w-[220px] shrink-0 snap-start overflow-hidden rounded-[12px] bg-[#111f2c] ring-1 ring-white/8"
+      tabIndex={-1}
+    >
       {image ? (
-        <img src={image} alt={name} className="h-[260px] w-full object-cover" />
+        <img src={image} alt={name} className="h-[260px] w-full object-cover" loading="lazy" />
       ) : (
         <div
           className={`flex h-[260px] items-end bg-[radial-gradient(circle_at_top,rgba(6,117,178,0.7),transparent_45%),linear-gradient(180deg,#22384a_0%,#0f161f_100%)] p-4 ${
@@ -50,75 +61,228 @@ function TeamCard({
   )
 }
 
+function NavChevron({ direction }: { direction: 'left' | 'right' }) {
+  return (
+    <svg viewBox="0 0 24 24" className="h-5 w-5 text-current" fill="none" stroke="currentColor" strokeWidth={2} aria-hidden>
+      {direction === 'left' ? (
+        <path strokeLinecap="round" strokeLinejoin="round" d="M15 6l-6 6 6 6" />
+      ) : (
+        <path strokeLinecap="round" strokeLinejoin="round" d="M9 6l6 6-6 6" />
+      )}
+    </svg>
+  )
+}
+
 export function TeamSlider() {
-  const trackRef = useRef<HTMLDivElement>(null)
-  const [pos, setPos] = useState(0)
+  const scrollerRef = useRef<HTMLDivElement>(null)
+  const thumbRef = useRef<HTMLDivElement>(null)
+  const programmaticRef = useRef(false)
+  const userPauseTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  const dragStart = useRef<number | null>(null)
-  const dragPos = useRef(0)
+  const [hoverPaused, setHoverPaused] = useState(false)
+  const [userPaused, setUserPaused] = useState(false)
+  const [canScroll, setCanScroll] = useState(false)
 
-  const CARD_W = 240
-  const MAX = Math.max(0, teamCards.length - 1)
+  const clearUserPauseTimer = useCallback(() => {
+    if (userPauseTimerRef.current != null) {
+      clearTimeout(userPauseTimerRef.current)
+      userPauseTimerRef.current = null
+    }
+  }, [])
 
-  function goTo(n: number) {
-    const next = Math.max(0, Math.min(n, MAX))
-    setPos(next)
-  }
+  const armUserPause = useCallback(() => {
+    clearUserPauseTimer()
+    setUserPaused(true)
+    userPauseTimerRef.current = window.setTimeout(() => {
+      setUserPaused(false)
+      userPauseTimerRef.current = null
+    }, USER_PAUSE_MS)
+  }, [clearUserPauseTimer])
 
-  const PAGE = 3
-  const pages = Math.ceil(teamCards.length / PAGE)
+  const syncScrollbar = useCallback(() => {
+    const el = scrollerRef.current
+    const thumb = thumbRef.current
+    if (!el) return
 
-  function onPointerDown(e: PointerEvent<HTMLDivElement>) {
-    dragStart.current = e.clientX
-    dragPos.current = pos
-    e.currentTarget.setPointerCapture(e.pointerId)
-  }
+    const maxScroll = Math.max(0, el.scrollWidth - el.clientWidth)
+    setCanScroll(maxScroll > EDGE_EPS)
 
-  function onPointerMove(e: PointerEvent<HTMLDivElement>) {
-    if (dragStart.current === null) return
-    const delta = dragStart.current - e.clientX
-    const steps = Math.round(delta / CARD_W)
-    goTo(dragPos.current + steps)
-  }
+    if (thumb) {
+      if (maxScroll <= 0) {
+        thumb.style.width = '100%'
+        thumb.style.transform = 'translateX(0%)'
+      } else {
+        const ratio = el.clientWidth / el.scrollWidth
+        const widthPct = Math.max(10, ratio * 100)
+        const progress = el.scrollLeft / maxScroll
+        const travel = ((1 - Math.max(0.1, ratio)) / Math.max(0.1, ratio)) * 100
 
-  function onPointerUp() {
-    dragStart.current = null
-  }
+        thumb.style.width = `${widthPct}%`
+        thumb.style.transform = `translateX(${progress * travel}%)`
+      }
+    }
+  }, [])
+
+  const scrollStep = useCallback(
+    (dir: 1 | -1) => {
+      const el = scrollerRef.current
+      if (!el) return
+
+      const max = Math.max(0, el.scrollWidth - el.clientWidth)
+      if (max <= 0) return
+
+      programmaticRef.current = true
+      window.setTimeout(() => {
+        programmaticRef.current = false
+      }, 650)
+
+      if (dir === 1) {
+        if (max - el.scrollLeft <= EDGE_EPS) {
+          el.scrollTo({ left: 0, behavior: 'smooth' })
+        } else {
+          el.scrollBy({ left: SLOT_PX, behavior: 'smooth' })
+        }
+      } else {
+        if (el.scrollLeft <= EDGE_EPS) {
+          el.scrollTo({ left: max, behavior: 'smooth' })
+        } else {
+          el.scrollBy({ left: -SLOT_PX, behavior: 'smooth' })
+        }
+      }
+
+      armUserPause()
+    },
+    [armUserPause],
+  )
+
+  const scrollNext = useCallback(() => scrollStep(1), [scrollStep])
+  const scrollPrev = useCallback(() => scrollStep(-1), [scrollStep])
+
+  useLayoutEffect(() => {
+    const el = scrollerRef.current
+    if (!el) return
+
+    syncScrollbar()
+    const ro = new ResizeObserver(syncScrollbar)
+    ro.observe(el)
+    const inner = el.firstElementChild
+    if (inner) ro.observe(inner)
+    return () => ro.disconnect()
+  }, [syncScrollbar])
+
+  useEffect(() => {
+    const el = scrollerRef.current
+    if (!el) return
+
+    const onScroll = () => {
+      syncScrollbar()
+      if (programmaticRef.current) return
+      armUserPause()
+    }
+
+    el.addEventListener('scroll', onScroll, { passive: true })
+    return () => el.removeEventListener('scroll', onScroll)
+  }, [armUserPause, syncScrollbar])
+
+  useEffect(() => {
+    return () => clearUserPauseTimer()
+  }, [clearUserPauseTimer])
+
+  const autoPaused = hoverPaused || userPaused
+
+  useEffect(() => {
+    if (autoPaused) return
+
+    const tick = () => {
+      const el = scrollerRef.current
+      if (!el) return
+      const max = Math.max(0, el.scrollWidth - el.clientWidth)
+      if (max <= 0) return
+
+      programmaticRef.current = true
+      window.setTimeout(() => {
+        programmaticRef.current = false
+      }, 650)
+
+      if (max - el.scrollLeft <= EDGE_EPS) {
+        el.scrollTo({ left: 0, behavior: 'smooth' })
+      } else {
+        el.scrollBy({ left: SLOT_PX, behavior: 'smooth' })
+      }
+    }
+
+    const id = window.setInterval(tick, 3000)
+    return () => window.clearInterval(id)
+  }, [autoPaused])
+
+  const buttonClass =
+    'flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/20 bg-white/[0.08] text-white/90 transition hover:border-tech-accent hover:text-tech-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tech-accent disabled:pointer-events-none disabled:opacity-35'
 
   return (
-    <div>
-      <div className="mb-6 flex items-center gap-3">
-        <button onClick={() => goTo(pos - 1)} disabled={pos === 0} className="btn-nav">←</button>
-        <button onClick={() => goTo(pos + 1)} disabled={pos >= MAX} className="btn-nav">→</button>
-
-        <div className="ml-2 flex gap-1.5">
-          {Array.from({ length: pages }).map((_, i) => (
-            <button
-              key={i}
-              onClick={() => goTo(i * PAGE)}
-              className={`dot ${Math.floor(pos / PAGE) === i ? 'active' : ''}`}
-            />
+    <div
+      className="group relative"
+      onMouseEnter={() => setHoverPaused(true)}
+      onMouseLeave={() => setHoverPaused(false)}
+    >
+      <div
+        ref={scrollerRef}
+        role="region"
+        aria-label="TechFest team members"
+        tabIndex={0}
+        onKeyDown={(e) => {
+          if (e.key === 'ArrowLeft') {
+            e.preventDefault()
+            scrollPrev()
+          } else if (e.key === 'ArrowRight') {
+            e.preventDefault()
+            scrollNext()
+          }
+        }}
+        className="flex w-full snap-x snap-mandatory scroll-smooth overflow-x-auto overscroll-x-contain pb-6 outline-none [-ms-overflow-style:none] [scrollbar-width:none] focus-visible:ring-2 focus-visible:ring-tech-accent/80 focus-visible:ring-offset-2 focus-visible:ring-offset-tech-bg [&::-webkit-scrollbar]:hidden"
+      >
+        <div className="flex w-max gap-5 pr-5">
+          {teamCards.map((member, index) => (
+            <TeamCard key={`${member.name}-${index}`} index={index} {...member} />
           ))}
         </div>
       </div>
 
-      <div className="-mx-1 overflow-hidden px-1">
+      {/* Navigation Buttons */}
+      <button
+        type="button"
+        className={`absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 sm:-translate-x-1/2 z-10 ${buttonClass} ${
+          canScroll ? 'opacity-0 group-hover:opacity-100 focus-visible:opacity-100' : 'opacity-0 pointer-events-none'
+        } bg-[#0a1118]/80 backdrop-blur-sm hidden sm:flex`}
+        aria-label="Previous team members"
+        disabled={!canScroll}
+        onClick={() => scrollPrev()}
+      >
+        <NavChevron direction="left" />
+      </button>
+
+      <button
+        type="button"
+        className={`absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 sm:translate-x-1/2 z-10 ${buttonClass} ${
+          canScroll ? 'opacity-0 group-hover:opacity-100 focus-visible:opacity-100' : 'opacity-0 pointer-events-none'
+        } bg-[#0a1118]/80 backdrop-blur-sm hidden sm:flex`}
+        aria-label="Next team members"
+        disabled={!canScroll}
+        onClick={() => scrollNext()}
+      >
+        <NavChevron direction="right" />
+      </button>
+      
+      {/* Custom Scrollbar/Progress */}
+      <div
+        className={`mx-auto mt-6 h-1.5 w-full max-w-3xl overflow-hidden rounded-full bg-white/10 sm:mt-10 transition-opacity duration-300 ${
+          canScroll ? 'opacity-100' : 'opacity-0 pointer-events-none'
+        }`}
+      >
         <div
-          ref={trackRef}
-          className="flex gap-5 pb-3 cursor-grab active:cursor-grabbing"
-          style={{
-            transform: `translateX(-${pos * CARD_W}px)`,
-            transition: 'transform 0.38s ease',
-          }}
-          onPointerDown={onPointerDown}
-          onPointerMove={onPointerMove}
-          onPointerUp={onPointerUp}
-          onPointerLeave={onPointerUp}
-        >
-          {teamCards.map((member, index) => (
-            <TeamCard key={index} index={index} {...member} />
-          ))}
-        </div>
+          ref={thumbRef}
+          className="h-full rounded-full bg-white transition-transform duration-75 ease-out"
+          style={{ width: '100%', transform: 'translateX(0%)' }}
+        />
       </div>
     </div>
   )

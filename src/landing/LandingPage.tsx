@@ -1,17 +1,15 @@
 import type { ReactNode } from 'react'
+import { TeamSlider } from './sections/TeamSlider'
+import { SponsorsSlider } from './sections/SponsorsSlider'
 import {
   MomentPlaceholderSvg,
   SpeakerPortraitSvg,
-  TeamPlaceholderSvg,
 } from './TechfestGraphics'
 
 const heroWordmarkImage = '/techfest/techfest-5-wordmark.png'
-/** Icon-only mark (keeps previous asset); paired with RUNTech Space wordmark in header */
 const headerGroupLogoMark = '/techfest/group-logo-mark.png'
-
 const aboutImage = '/techfest/2bc946c6-33c7-4315-b584-34a2ceae4bd0.png'
 
-/** WHAT TO EXPECT card art (`pngs/` → `public/techfest/expect/`) */
 const expectArt = {
   keynote: '/techfest/expect/president.png',
   panel: '/techfest/expect/debate.png',
@@ -66,22 +64,6 @@ const speakerCards = [
     accent: 'from-[#7e6558] to-[#201a18]',
   },
 ]
-
-const teamCards = [
-  { name: 'Mr. Sam', role: 'Staff Advisor' },
-  { name: 'Akinwale Aremu', role: 'President' },
-  { name: 'Bolujo Joseph', role: 'Vice President' },
-  { name: 'Ayomide Arimoro', role: 'General Secretary' },
-  { name: 'Blossom Ubochi', role: 'Public Relations Officer' },
-  { name: 'Ifeoluwa Omidire', role: 'Programs & Strategy Lead' },
-  { name: 'Emmanuel Latunde', role: 'Partnership Lead' },
-  { name: 'Godbless Peter', role: 'Technical Lead' },
-  { name: 'Fadehan Daniel', role: 'Assistant Technical Lead' },
-  { name: 'Nnadozie Destiny', role: 'Creative Director' },
-  { name: 'Enoch Abe', role: 'Assistant Creative Director' },
-  { name: 'Peace Amudipe', role: 'Welfare Director' },
-]
-
 
 const moments = [
   {
@@ -232,30 +214,6 @@ function SpeakerCard({
   )
 }
 
-function TeamCard({
-  image,
-  name,
-  role,
-}: {
-  image?: string
-  name: string
-  role: string
-}) {
-  return (
-    <article className="overflow-hidden rounded-[12px] bg-[#111f2c] ring-1 ring-white/8">
-      {image ? (
-        <img src={image} alt={name} className="h-[300px] w-full object-cover" loading="lazy" />
-      ) : (
-        <TeamPlaceholderSvg className="h-[300px] w-full" />
-      )}
-      <div className="bg-[rgba(255,255,255,0.05)] px-5 py-4 text-center">
-        <h3 className="text-lg font-medium text-white">{name}</h3>
-        <p className="text-sm text-white/78">{role}</p>
-      </div>
-    </article>
-  )
-}
-
 function ExpectArt({ src, alt, className = '' }: { src: string; alt: string; className?: string }) {
   return (
     <img
@@ -293,7 +251,6 @@ function ExpectCard({
     <article
       className={`relative min-w-0 overflow-hidden rounded-[12px] p-5 ring-1 ring-black/15 sm:p-7 lg:p-8 ${tone} ${className}`}
     >
-      {/* pb-* or pr-* reserves space so copy wraps around illustration */}
       <div className={`relative z-10 min-w-0 w-full max-w-full text-pretty ${contentClassName}`}>
         <h3
           className={`text-[clamp(1.125rem,2.8vw,1.45rem)] font-medium uppercase leading-[1.2] tracking-[0.01em] text-white sm:leading-[1.15] ${titleClassName}`}
@@ -322,6 +279,7 @@ export function LandingPage() {
         aria-hidden
         className="pointer-events-none absolute inset-x-0 top-[42rem] h-[1000px] bg-[radial-gradient(circle_at_center,rgba(104,203,226,0.1),transparent_52%)]"
       />
+
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-tech-accent focus:px-4 focus:py-2 focus:text-tech-white"
@@ -384,6 +342,7 @@ export function LandingPage() {
                     one space.
                   </p>
                 </article>
+
                 <article className="rounded-[12px] bg-[#263238] px-7 py-6">
                   <h3 className="text-xl font-medium">Learn &amp; Build</h3>
                   <p className="mt-3 text-base leading-7 text-white/75">
@@ -413,7 +372,8 @@ export function LandingPage() {
               <span className="text-[#0675b2]">TO EXPECT</span>
             </h2>
             <p className="mx-auto mt-4 max-w-[52ch] text-pretty text-[clamp(0.875rem,2.5vw,0.9375rem)] font-normal leading-relaxed text-tech-subtext [overflow-wrap:anywhere] sm:mt-4 md:max-w-[80ch]">
-              A mix of inspiring sessions, practical learning, meaningful connections, and exciting experiences all in one place.
+              A mix of inspiring sessions, practical learning, meaningful connections, and exciting
+              experiences all in one place.
             </p>
           </div>
 
@@ -513,6 +473,22 @@ export function LandingPage() {
                 className="max-h-[40%] w-auto max-w-[min(85%,300px)] xl:bottom-4 xl:right-4 xl:max-h-[45%] xl:max-w-[60%]"
               />
             </ExpectCard>
+            <ExpectCard
+              title="MERCH"
+              description="Celebrate TechFest with official event merchandise designed for the community."
+              tone="bg-[linear-gradient(135deg,#123a57_0%,#0b1722_100%)]"
+              className="min-h-[300px] sm:min-h-[360px] xl:col-span-12 xl:row-start-4 xl:min-h-[420px]"
+              contentClassName="pb-[52%] sm:pb-[45%] xl:pb-0 xl:max-w-[38%]"
+              titleClassName="text-[#68cbe2]"
+              descriptionClassName="text-tech-subtext"
+            >
+              <img
+                src="/techfest/merch.jpeg"
+                alt="TechFest 5.0 branded T-shirts"
+                className="absolute bottom-0 right-0 h-full w-full object-cover opacity-75 xl:w-[58%]"
+                loading="lazy"
+              />
+            </ExpectCard>
           </div>
         </Shell>
 
@@ -522,6 +498,7 @@ export function LandingPage() {
               POWER SPEAKERS
             </h2>
           </div>
+
           <div className="mt-10 grid gap-8 lg:grid-cols-3">
             {speakerCards.slice(0, 3).map((speaker, index) => (
               <SpeakerCard key={`speaker-top-${index}`} {...speaker} />
@@ -531,6 +508,7 @@ export function LandingPage() {
           <div className="mt-16 w-fit border-t border-white/25 pt-3">
             <h2 className="text-3xl font-semibold tracking-[-0.05em] sm:text-4xl">PANEL VOICES</h2>
           </div>
+
           <div className="mt-10 grid gap-8 lg:grid-cols-3">
             {speakerCards.slice(3).map((speaker, index) => (
               <SpeakerCard key={`speaker-bottom-${index}`} {...speaker} />
@@ -542,10 +520,17 @@ export function LandingPage() {
           <h2 className="text-center text-4xl font-semibold tracking-[-0.05em] sm:text-5xl">
             THE MINDS BEHIND <span className="text-tech-accent">IT</span>
           </h2>
-          <div className="mt-12 grid gap-8 sm:grid-cols-2 xl:grid-cols-4">
-            {teamCards.map((member, index) => (
-              <TeamCard key={`team-${index}`} {...member} />
-            ))}
+          <div className="mt-12">
+            <TeamSlider />
+          </div>
+        </Shell>
+
+        <Shell className="pt-24 sm:pt-28">
+          <h2 className="text-center text-4xl font-semibold tracking-[-0.05em] sm:text-5xl">
+            OUR <span className="text-tech-accent">SPONSORS</span>
+          </h2>
+          <div className="mt-12">
+            <SponsorsSlider />
           </div>
         </Shell>
 
@@ -553,6 +538,7 @@ export function LandingPage() {
           <h2 className="text-center text-4xl font-semibold tracking-[-0.05em] sm:text-5xl">
             THE <span className="text-tech-accent">MOMENTS</span>
           </h2>
+
           <div className="mt-10 grid gap-6 lg:grid-cols-12">
             {moments.map((moment, index) => (
               <div key={`moment-${index}`} className={`${moment.className} overflow-hidden rounded-[12px]`}>
