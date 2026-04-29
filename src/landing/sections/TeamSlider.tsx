@@ -1,10 +1,10 @@
-import { useRef, useState, type PointerEvent } from 'react'
+import { useEffect, useState } from 'react'
 
 const teamCards = [
   { name: 'Mr. Sam', role: 'Staff Advisor' },
   { name: 'Akinwale Aremu', role: 'President' },
   { name: 'Bolujo Joseph', role: 'Vice President' },
-  { name: 'Ayomide Arimoro', role: 'General Secretary' },
+  { name: 'Ayomide Arimoro', role: 'President' },
   { name: 'Blossom Ubochi', role: 'Public Relations Officer' },
   { name: 'Ifeoluwa Omidire', role: 'Programs & Strategy Lead' },
   { name: 'Emmanuel Latunde', role: 'Partnership Lead' },
@@ -29,7 +29,7 @@ function TeamCard({
   return (
     <article className="flex-none w-[220px] overflow-hidden rounded-[12px] bg-[#111f2c] ring-1 ring-white/8 select-none">
       {image ? (
-        <img src={image} alt={name} className="h-[260px] w-full object-cover" />
+        <img src={image} alt={name} className="h-[260px] w-full object-cover" loading="lazy" />
       ) : (
         <div
           className={`flex h-[260px] items-end bg-[radial-gradient(circle_at_top,rgba(6,117,178,0.7),transparent_45%),linear-gradient(180deg,#22384a_0%,#0f161f_100%)] p-4 ${
@@ -51,74 +51,39 @@ function TeamCard({
 }
 
 export function TeamSlider() {
-  const trackRef = useRef<HTMLDivElement>(null)
   const [pos, setPos] = useState(0)
+  const [paused, setPaused] = useState(false)
 
-  const dragStart = useRef<number | null>(null)
-  const dragPos = useRef(0)
+  const CARD_WIDTH_WITH_GAP = 240
+  const VISIBLE_CARDS = 3
+  const maxPos = Math.max(0, teamCards.length - VISIBLE_CARDS)
 
-  const CARD_W = 240
-  const MAX = Math.max(0, teamCards.length - 1)
+  useEffect(() => {
+    if (paused) return
 
-  function goTo(n: number) {
-    const next = Math.max(0, Math.min(n, MAX))
-    setPos(next)
-  }
+    const timer = window.setInterval(() => {
+      setPos((current) => (current >= maxPos ? 0 : current + 1))
+    }, 3000)
 
-  const PAGE = 3
-  const pages = Math.ceil(teamCards.length / PAGE)
-
-  function onPointerDown(e: PointerEvent<HTMLDivElement>) {
-    dragStart.current = e.clientX
-    dragPos.current = pos
-    e.currentTarget.setPointerCapture(e.pointerId)
-  }
-
-  function onPointerMove(e: PointerEvent<HTMLDivElement>) {
-    if (dragStart.current === null) return
-    const delta = dragStart.current - e.clientX
-    const steps = Math.round(delta / CARD_W)
-    goTo(dragPos.current + steps)
-  }
-
-  function onPointerUp() {
-    dragStart.current = null
-  }
+    return () => window.clearInterval(timer)
+  }, [paused, maxPos])
 
   return (
-    <div>
-      <div className="mb-6 flex items-center gap-3">
-        <button onClick={() => goTo(pos - 1)} disabled={pos === 0} className="btn-nav">←</button>
-        <button onClick={() => goTo(pos + 1)} disabled={pos >= MAX} className="btn-nav">→</button>
-
-        <div className="ml-2 flex gap-1.5">
-          {Array.from({ length: pages }).map((_, i) => (
-            <button
-              key={i}
-              onClick={() => goTo(i * PAGE)}
-              className={`dot ${Math.floor(pos / PAGE) === i ? 'active' : ''}`}
-            />
-          ))}
-        </div>
-      </div>
-
-      <div className="-mx-1 overflow-hidden px-1">
-        <div
-          ref={trackRef}
-          className="flex gap-5 pb-3 cursor-grab active:cursor-grabbing"
-          style={{
-            transform: `translateX(-${pos * CARD_W}px)`,
-            transition: 'transform 0.38s ease',
-          }}
-          onPointerDown={onPointerDown}
-          onPointerMove={onPointerMove}
-          onPointerUp={onPointerUp}
-          onPointerLeave={onPointerUp}
-        >
-          {teamCards.map((member, index) => (
-            <TeamCard key={index} index={index} {...member} />
-          ))}
-        </div>
+    <div
+      className="overflow-hidden"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+    >
+      <div
+        className="flex gap-5 pb-3"
+        style={{
+          transform: `translateX(-${pos * CARD_WIDTH_WITH_GAP}px)`,
+          transition: 'transform 0.7s ease-in-out',
+        }}
+      >
+        {teamCards.map((member, index) => (
+          <TeamCard key={`${member.name}-${index}`} index={index} {...member} />
+        ))}
       </div>
     </div>
   )
