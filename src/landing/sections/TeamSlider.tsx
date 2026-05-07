@@ -7,18 +7,18 @@ const SLOT_PX = CARD_WIDTH_PX + GAP_PX
 
 const teamCards = [
   { name: 'Mr. Sam', role: 'Staff Advisor' },
-  { name: 'Akinwale Aremu', role: 'President' },
-  { name: 'Bolujo Joseph', role: 'Vice President' },
-  { name: 'Ayomide Arimoro', role: 'President' },
-  { name: 'Blossom Ubochi', role: 'Public Relations Officer' },
-  { name: 'Ifeoluwa Omidire', role: 'Programs & Strategy Lead' },
-  { name: 'Emmanuel Latunde', role: 'Partnership Lead' },
-  { name: 'Godbless Peter', role: 'Technical Lead' },
-  { name: 'Fadehan Daniel', role: 'Assistant Technical Lead' },
-  { name: 'Nnadozie Destiny', role: 'Creative Director' },
-  { name: 'Enoch Abe', role: 'Assistant Creative Director' },
-  { name: 'Peace Amudipe', role: 'Welfare Director' },
-]
+  { name: 'Akinwale Aremu', role: 'President', image: '/techfest/team/Akinwale-Aremu.png' },
+  { name: 'Bolujo Joseph', role: 'Vice President', image: '/techfest/team/Bolujo-Joseph.png' },
+  { name: 'Ayomide Arimoro', role: 'President', image: '/techfest/team/Ayomide-Arimoro.png' },
+  { name: 'Blossom Ubochi', role: 'Public Relations Officer', image: '/techfest/team/Blossom-Ubochi.png' },
+  { name: 'Ifeoluwa Omidire', role: 'Programs & Strategy Lead', image: '/techfest/team/Omidire-Ifeoluwa.png' },
+  { name: 'Emmanuel Latunde', role: 'Partnership Lead', image: '/techfest/team/Latunde-Emmanuel.png' },
+  { name: 'Godbless Peter', role: 'Technical Lead', image: '/techfest/team/Peter-Godbless.png' },
+  { name: 'Fadehan Daniel', role: 'Assistant Technical Lead', image: '/techfest/team/Daniel-Fadehan.png' },
+  { name: 'Nnadozie Destiny', role: 'Creative Director', image: '/techfest/team/Destiny-Nnadozie.jpg' },
+  { name: 'Enoch Abe', role: 'Assistant Creative Director', image: '/techfest/team/Enoch-Abe.png' },
+  { name: 'Peace Amudipe', role: 'Welfare Director', image: '/techfest/team/Peace-Amudipe.png' },
+] as const
 
 const USER_PAUSE_MS = 10_000
 const EDGE_EPS = 4
