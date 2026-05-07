@@ -4,8 +4,8 @@ type Sponsor = {
 }
 
 const sponsors: Sponsor[] = [
-  { name: 'Payaza' },
-  { name: 'VFD' },
+  { name: 'Payaza', logo: '/techfest/payaza_pics.png' },
+  { name: 'VFD', logo: '/techfest/vfd.png' },
 ]
 
 export function SponsorsSlider() {

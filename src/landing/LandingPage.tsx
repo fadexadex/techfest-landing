@@ -50,22 +50,32 @@ const speakerCards = [
     accent: 'from-[#4d5d68] to-[#161d23]',
   },
   {
-    name: 'Anna Willows',
-    role: 'QA Tester',
-    topic: 'Topic: Beyond Classroom Learning',
+    name: 'Abayomi Abiodun',
+    role: 'Panelist',
+    topic: 'Topic: Leveraging The Power Of AI',
     accent: 'from-[#5a7e8b] to-[#172228]',
+    image: '/techfest/Abayomi Abiodun.jpeg',
   },
   {
-    name: 'John Doe',
-    role: 'Moderator',
-    topic: 'Topic: Beyond Classroom Learning',
+    name: 'Laja',
+    role: 'Panelist',
+    topic: 'Topic: Staying Relevant Today',
     accent: 'from-[#4b6983] to-[#182029]',
+    image: '/techfest/Laja.jpeg',
   },
   {
-    name: 'John Doe',
-    role: 'Content Creator',
-    topic: 'Topic: Beyond Classroom Learning',
+    name: 'Israel',
+    role: 'Panelist',
+    topic: 'Topic: Beyond Design',
     accent: 'from-[#7e6558] to-[#201a18]',
+    image: '/techfest/Israel.jpeg',
+  },
+  {
+    name: 'Eve Chukuma',
+    role: 'Panelist',
+    topic: 'Topic: Innovation & Growth',
+    accent: 'from-[#6b5a8b] to-[#1a1628]',
+    image: '/techfest/eve_chukuma.jpg',
   },
 ]
 
@@ -185,11 +195,13 @@ function SpeakerCard({
   role,
   topic,
   accent,
+  image,
 }: {
   name: string
   role: string
   topic: string
   accent: string
+  image?: string
 }) {
   const initials = name
     .split(' ')
@@ -200,12 +212,20 @@ function SpeakerCard({
 
   return (
     <article className="overflow-hidden rounded-[12px] bg-white/6 shadow-[0_8px_24px_rgba(0,0,0,0.2)] ring-1 ring-white/10">
-      <SpeakerPortraitSvg
-        initials={initials}
-        accentFrom={accent.match(/from-\[(#[0-9A-Fa-f]{6})\]/)?.[1] ?? '#41576d'}
-        accentTo={accent.match(/to-\[(#[0-9A-Fa-f]{6})\]/)?.[1] ?? '#161d23'}
-        className="h-[320px] w-full md:h-[390px]"
-      />
+      {image ? (
+        <img
+          src={image}
+          alt={name}
+          className="h-[320px] w-full object-cover md:h-[390px]"
+        />
+      ) : (
+        <SpeakerPortraitSvg
+          initials={initials}
+          accentFrom={accent.match(/from-\[(#[0-9A-Fa-f]{6})\]/)?.[1] ?? '#41576d'}
+          accentTo={accent.match(/to-\[(#[0-9A-Fa-f]{6})\]/)?.[1] ?? '#161d23'}
+          className="h-[320px] w-full md:h-[390px]"
+        />
+      )}
       <div className="flex items-start justify-between gap-4 bg-white/7 px-4 py-5">
         <div>
           <h3 className="text-[1.15rem] font-medium text-white">{name}</h3>
@@ -431,7 +451,7 @@ export function LandingPage() {
             </ExpectCard>
 
             <ExpectCard
-              title="HACKATHON & IDEATION SESSION"
+              title=""
               description=""
               tone="bg-[linear-gradient(135deg,#1a232c_0%,#12171c_100%)]"
               className="min-h-[320px] sm:min-h-[380px] xl:col-span-4 xl:col-start-9 xl:row-start-2 xl:min-h-[360px]"
