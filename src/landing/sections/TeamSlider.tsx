@@ -6,7 +6,7 @@ const GAP_PX = 20
 const SLOT_PX = CARD_WIDTH_PX + GAP_PX
 
 const teamCards = [
-  { name: 'Mr. Sam', role: 'Staff Advisor' },
+  { name: 'Mr. Sam', role: 'Staff Advisor', image: '/techfest/team/Mr-Sam.png' },
   { name: 'Akinwale Aremu', role: 'President', image: '/techfest/team/Akinwale-Aremu.png' },
   { name: 'Bolujo Joseph', role: 'Vice President', image: '/techfest/team/Bolujo-Joseph.png' },
   { name: 'Ayomide Arimoro', role: 'President', image: '/techfest/team/Ayomide-Arimoro.png' },

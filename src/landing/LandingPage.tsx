@@ -1,12 +1,7 @@
 import type { ReactNode } from 'react'
 import { TeamSlider } from './sections/TeamSlider'
 import { SponsorsSlider } from './sections/SponsorsSlider'
-import {
-  MomentPlaceholderSvg,
-  SpeakerPortraitSvg,
-  HackathonCard,
-  GamesCard,
-} from './TechfestGraphics'
+import { SpeakerPortraitSvg, HackathonCard, GamesCard } from './TechfestGraphics'
 
 const heroWordmarkImage = '/techfest/techfest-5-wordmark.png'
 const headerGroupLogoMark = '/techfest/group-logo-mark.png'
@@ -87,22 +82,22 @@ const moments = [
     eyebrow: 'Workshops',
   },
   {
-    eyebrow: 'Innovation',
-    accent: 'from-[#0f3551] to-[#0d1822]',
+    image: '/techfest/moments/innovation.jpg',
     className: 'lg:col-span-4',
-    alt: 'Abstract art representing creative experimentation during TechFest.',
+    alt: 'Team collaborating on laptops during a build session and ideation.',
+    eyebrow: 'Innovation',
   },
   {
-    eyebrow: 'Community',
-    accent: 'from-[#113753] to-[#101721]',
+    image: '/techfest/moments/community.jpg',
     className: 'lg:col-span-5',
-    alt: 'Abstract card representing community moments from the event.',
+    alt: 'People meeting and networking at a professional tech event.',
+    eyebrow: 'Community',
   },
   {
-    eyebrow: 'Energy',
-    accent: 'from-[#123a57] to-[#111921]',
+    image: '/techfest/moments/energy.jpg',
     className: 'lg:col-span-7',
-    alt: 'Abstract card representing the energy of the event.',
+    alt: 'Vibrant stage lighting and crowd atmosphere at a live event.',
+    eyebrow: 'Energy',
   },
 ]
 
@@ -281,11 +276,13 @@ function ExpectCard({
         >
           {title}
         </h3>
-        <p
-          className={`mt-2.5 text-[0.8125rem] leading-relaxed sm:mt-3.5 sm:text-sm sm:leading-[1.6] ${descriptionClassName || 'text-white/80'}`}
-        >
-          {description}
-        </p>
+        {description.trim() ? (
+          <p
+            className={`mt-2.5 text-[0.8125rem] leading-relaxed sm:mt-3.5 sm:text-sm sm:leading-[1.6] ${descriptionClassName || 'text-white/80'}`}
+          >
+            {description}
+          </p>
+        ) : null}
       </div>
       <div className="pointer-events-none absolute inset-0 overflow-hidden">{children}</div>
     </article>
@@ -451,18 +448,16 @@ export function LandingPage() {
             </ExpectCard>
 
             <ExpectCard
-              title=""
+              title="HACKATHON & IDEATION SESSION"
               description=""
               tone="bg-[linear-gradient(135deg,#1a232c_0%,#12171c_100%)]"
               className="min-h-[320px] sm:min-h-[380px] xl:col-span-4 xl:col-start-9 xl:row-start-2 xl:min-h-[360px]"
-              contentClassName="pb-[0%] sm:pb-[0%] xl:pb-[0%] xl:max-w-[90%]"
-              titleClassName="text-[#a5cbe5]"
+              contentClassName="max-w-[46ch] xl:max-w-[90%]"
+              titleClassName="text-[#a5cbe5] drop-shadow-[0_1px_2px_rgba(0,0,0,0.45)]"
               descriptionClassName="text-tech-subtext"
             >
-              <div className="pointer-events-none absolute inset-0 overflow-hidden flex items-center justify-center p-3">
-                <div className="w-full">
-                  <HackathonCard />
-                </div>
+              <div className="pointer-events-none absolute inset-0 flex flex-col justify-end overflow-hidden px-5 pb-6 sm:px-7 sm:pb-8 lg:px-8 lg:pb-9">
+                <HackathonCard className="w-full shrink-0" />
               </div>
             </ExpectCard>
 
@@ -547,27 +542,34 @@ export function LandingPage() {
           <div className="mt-10 grid gap-6 lg:grid-cols-12">
             {moments.map((moment, index) => (
               <div key={`moment-${index}`} className={`${moment.className} overflow-hidden rounded-[12px]`}>
-                {moment.image ? (
-                  <div className="group relative overflow-hidden rounded-[12px]">
-                    <img
-                      src={moment.image}
-                      alt={moment.alt}
-                      className="h-[320px] w-full object-cover transition duration-500 group-hover:scale-[1.02] sm:h-[424px]"
-                      loading="lazy"
-                    />
-                    <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(17,19,24,0.04),rgba(17,19,24,0.72))]" />
-                    <div className="absolute left-5 top-5 rounded-full bg-black/35 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.24em] text-white/80">
-                      {moment.eyebrow}
-                    </div>
+                <div className="group relative overflow-hidden rounded-[12px]">
+                  <img
+                    src={moment.image}
+                    alt={moment.alt}
+                    className="h-[320px] w-full object-cover transition duration-500 group-hover:scale-[1.02] sm:h-[424px]"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(17,19,24,0.04),rgba(17,19,24,0.72))]" />
+                  <div className="absolute left-5 top-5 rounded-full bg-black/35 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.24em] text-white/80">
+                    {moment.eyebrow}
                   </div>
-                ) : (
-                  <div role="img" aria-label={moment.alt}>
-                    <MomentPlaceholderSvg eyebrow={moment.eyebrow} className="h-[320px] w-full sm:h-[424px]" />
-                  </div>
-                )}
+                </div>
               </div>
             ))}
           </div>
+          <p className="mx-auto mt-6 max-w-[52ch] text-pretty text-center text-[10px] leading-relaxed text-white/38">
+            Workshop photo: event library. Other tiles use stock photography from{' '}
+            <a
+              href="https://unsplash.com?utm_source=techfest_landing&utm_medium=referral"
+              className="text-white/55 underline decoration-white/25 underline-offset-2 transition hover:text-white/75"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Unsplash
+            </a>
+            .
+          </p>
         </Shell>
       </main>
 

@@ -334,98 +334,36 @@ export function TeamPlaceholderSvg({ className = '' }: { className?: string }) {
   )
 }
 
-export function MomentPlaceholderSvg({
-  className = '',
-  eyebrow,
-}: {
-  className?: string
-  eyebrow: string
-}) {
-  return (
-    <svg viewBox="0 0 854 424" aria-hidden className={className}>
-      <defs>
-        <radialGradient id="momentGlow" cx="50%" cy="0%" r="65%">
-          <stop offset="0%" stopColor="rgba(5,128,195,0.55)" />
-          <stop offset="100%" stopColor="rgba(5,128,195,0)" />
-        </radialGradient>
-      </defs>
-      <rect width="854" height="424" rx="12" fill="#0F2231" />
-      <rect width="854" height="424" rx="12" fill="url(#momentGlow)" />
-      <rect x="34" y="30" width="138" height="34" rx="17" fill="rgba(255,255,255,0.1)" />
-      <text
-        x="103"
-        y="52"
-        textAnchor="middle"
-        fill="rgba(255,255,255,0.78)"
-        fontFamily="'DM Sans', sans-serif"
-        fontSize="15"
-        fontWeight="700"
-        letterSpacing="3"
-      >
-        {eyebrow.toUpperCase()}
-      </text>
-      <circle cx="104" cy="352" r="20" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.12)" />
-      <circle cx="748" cy="328" r="28" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.12)" />
-    </svg>
-  )
-}
 
 export function HackathonCard({ className = '' }: { className?: string }) {
   return (
-    <div
-      className={`relative overflow-hidden rounded-2xl flex w-full max-w-full flex-col font-sans ${className}`}
-      style={{ background: 'linear-gradient(135deg,#131c27 0%,#0d1520 100%)' }}
-    >
-      {/* dot grid texture */}
-      <div
-        className="absolute inset-0 pointer-events-none z-0"
-        style={{
-          backgroundImage:
-            'radial-gradient(circle, rgba(165,203,229,0.07) 1px, transparent 1px)',
-          backgroundSize: '22px 22px',
-        }}
-      />
-
-      {/* header */}
-      <div className="relative z-10 px-5 pt-5 pb-0 sm:px-7">
-        <p
-          className="text-[10px] sm:text-[11px] tracking-[1.5px] uppercase mb-4"
-          style={{ color: '#a5cbe5' }}
-        >
-          Hackathon &amp; Ideation Session
-        </p>
-      </div>
-
-      {/* podium */}
-      <div className="relative z-10 flex-1 flex flex-row items-end justify-center gap-2 px-3 pb-0 sm:gap-6 sm:px-7">
+    <div className={`relative flex w-full max-w-full flex-col font-sans ${className}`}>
+      <div className="relative flex w-full flex-row items-end justify-center gap-3 pb-0 pt-0 min-[400px]:gap-4 sm:gap-6 md:gap-8 lg:gap-10">
         <PodiumCol
-          className="w-1/3 sm:w-auto"
+          className="min-w-0 flex-1 basis-0"
           prize="N50K"
           rank="2nd"
-          blockHeight="h-[100px] sm:h-[170px]"
+          blockHeight="h-[108px] min-[380px]:h-[118px] sm:h-[170px]"
           blockColor="#e9c0ce"
-          textColor="#5a1e35"
           ribbonA="#e63946"
           ribbonB="#f4a261"
         />
         <PodiumCol
-          className="w-1/3 sm:w-auto sm:mt-2"
+          className="min-w-0 flex-1 basis-0 sm:mt-2"
           prize="N100K"
           rank="1st"
-          blockHeight="h-[130px] sm:h-[220px]"
+          blockHeight="h-[138px] min-[380px]:h-[150px] sm:h-[220px]"
           blockColor="#18c9a3"
-          textColor="#063d2e"
           ribbonA="#1565c0"
           ribbonB="#64b5f6"
           prizeLarge
         />
         <PodiumCol
-          className="w-1/3 sm:w-auto"
+          className="min-w-0 flex-1 basis-0"
           prize="N30K"
           rank="3rd"
-          blockHeight="h-[80px] sm:h-[140px]"
+          blockHeight="h-[86px] min-[380px]:h-[96px] sm:h-[140px]"
           blockColor="#60b8d4"
-          textColor="#0a3447"
           ribbonA="#9e9e9e"
           ribbonB="#e0e0e0"
         />
@@ -518,7 +456,6 @@ function PodiumCol({
   rank,
   blockHeight,
   blockColor,
-  textColor,
   ribbonA,
   ribbonB,
   prizeLarge = false,
@@ -528,32 +465,37 @@ function PodiumCol({
   rank: string
   blockHeight: string
   blockColor: string
-  textColor: string
   ribbonA: string
   ribbonB: string
   prizeLarge?: boolean
   className?: string
 }) {
   return (
-    <div className={`w-full sm:w-auto max-w-[140px] flex flex-col items-center ${className}`}>
-      <p
-        className={`font-black text-white mb-2 tracking-tight ${prizeLarge ? 'text-[15px] sm:text-lg' : 'text-[13px] sm:text-[15px]'}`}
-      >
-        {prize}
-      </p>
-      <div className="-mb-3.5 z-10 relative">
-        <MedalSvg rank={rank} ribbonA={ribbonA} ribbonB={ribbonB} />
-      </div>
-      <div
-        className={`w-full ${blockHeight} rounded-t-xl flex flex-col items-center justify-end pb-5`}
-        style={{ background: blockColor }}
-      >
-        <p className="text-[15px] font-bold mb-0.5" style={{ color: textColor }}>
-          {rank}
+    <div className={`flex min-w-0 flex-col ${className}`}>
+      <div className="mx-auto flex w-full max-w-[168px] flex-col items-center sm:max-w-[178px]">
+        <p
+          className={`mb-2 text-center tabular-nums tracking-tight text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.65)] sm:mb-2.5 ${prizeLarge ? 'text-[0.9375rem] font-black min-[380px]:text-[15px] sm:text-lg' : 'text-[0.8125rem] font-black min-[380px]:text-[13px] sm:text-[15px]'}`}
+        >
+          {prize}
         </p>
-        <p className="text-[12px] font-normal" style={{ color: textColor, opacity: 0.75 }}>
-          Position
-        </p>
+        <div className="relative z-10 -mb-3.5 origin-bottom scale-[0.9] min-[460px]:scale-100">
+          <MedalSvg rank={rank} ribbonA={ribbonA} ribbonB={ribbonB} />
+        </div>
+        <div
+          className={`relative w-full overflow-hidden rounded-t-xl ${blockHeight} flex flex-col items-center justify-end px-2 pb-[1.125rem] ring-1 ring-inset ring-black/20 sm:px-0 sm:pb-5`}
+          style={{ backgroundColor: blockColor }}
+        >
+          <div
+            className="pointer-events-none absolute inset-x-0 top-0 h-[45%] bg-gradient-to-b from-white/25 to-transparent"
+            aria-hidden
+          />
+          <p className="relative z-[1] mb-0.5 text-[clamp(13px,2.9vw,15px)] font-extrabold leading-none tracking-tight text-neutral-950">
+            {rank}
+          </p>
+          <p className="relative z-[1] text-[10px] font-semibold uppercase leading-tight tracking-[0.16em] text-neutral-950/90 sm:text-[11px] sm:tracking-[0.14em]">
+            Position
+          </p>
+        </div>
       </div>
     </div>
   )
