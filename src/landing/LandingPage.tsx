@@ -4,11 +4,15 @@ import { SponsorsSlider } from './sections/SponsorsSlider'
 import {
   MomentPlaceholderSvg,
   SpeakerPortraitSvg,
+  HackathonCard,
+  GamesCard,
 } from './TechfestGraphics'
 
 const heroWordmarkImage = '/techfest/techfest-5-wordmark.png'
 const headerGroupLogoMark = '/techfest/group-logo-mark.png'
 const aboutImage = '/techfest/2bc946c6-33c7-4315-b584-34a2ceae4bd0.png'
+const merchImage = '/techfest/merch.jpeg'
+const vrImage = '/techfest/vr.jpg'
 
 const expectArt = {
   keynote: '/techfest/expect/president.png',
@@ -428,18 +432,18 @@ export function LandingPage() {
 
             <ExpectCard
               title="HACKATHON & IDEATION SESSION"
-              description="Brainstorm innovative ideas, collaborate with a team, build real solutions, and compete in a fast-paced challenge with meaningful impact."
+              description=""
               tone="bg-[linear-gradient(135deg,#1a232c_0%,#12171c_100%)]"
-              className="min-h-[260px] sm:min-h-[320px] xl:col-span-4 xl:col-start-9 xl:row-start-2 xl:min-h-[320px]"
-              contentClassName="pb-[40%] sm:pb-[35%] xl:pb-[45%] xl:max-w-[90%]"
+              className="min-h-[320px] sm:min-h-[380px] xl:col-span-4 xl:col-start-9 xl:row-start-2 xl:min-h-[360px]"
+              contentClassName="pb-[0%] sm:pb-[0%] xl:pb-[0%] xl:max-w-[90%]"
               titleClassName="text-[#a5cbe5]"
               descriptionClassName="text-tech-subtext"
             >
-              <ExpectArt
-                src={expectArt.hackathon}
-                alt=""
-                className="max-h-[42%] w-auto max-w-[min(88%,320px)] xl:bottom-4 xl:right-4 xl:max-h-[45%] xl:max-w-[85%]"
-              />
+              <div className="pointer-events-none absolute inset-0 overflow-hidden flex items-center justify-center p-3">
+                <div className="w-full">
+                  <HackathonCard />
+                </div>
+              </div>
             </ExpectCard>
 
             <ExpectCard
@@ -458,37 +462,18 @@ export function LandingPage() {
               />
             </ExpectCard>
 
-            <ExpectCard
-              title="GAMES & ENTERTAINMENT"
-              description="Enjoy fun games and interactive experiences in one lively, high-energy space."
-              tone="bg-[linear-gradient(135deg,#20181b_0%,#462232_100%)]"
+            <GamesCard
+              vrImage={vrImage}
               className="min-h-[260px] sm:min-h-[300px] xl:col-span-4 xl:col-start-9 xl:row-start-3 xl:min-h-[260px]"
-              contentClassName="pb-[35%] sm:pb-[30%] xl:pb-[35%] xl:max-w-[90%]"
-              titleClassName="text-[#df93a9]"
-              descriptionClassName="text-tech-subtext"
-            >
-              <ExpectArt
-                src={expectArt.games}
-                alt=""
-                className="max-h-[40%] w-auto max-w-[min(85%,300px)] xl:bottom-4 xl:right-4 xl:max-h-[45%] xl:max-w-[60%]"
-              />
-            </ExpectCard>
-            <ExpectCard
-              title="MERCH"
-              description="Celebrate TechFest with official event merchandise designed for the community."
-              tone="bg-[linear-gradient(135deg,#123a57_0%,#0b1722_100%)]"
-              className="min-h-[300px] sm:min-h-[360px] xl:col-span-12 xl:row-start-4 xl:min-h-[420px]"
-              contentClassName="pb-[52%] sm:pb-[45%] xl:pb-0 xl:max-w-[38%]"
-              titleClassName="text-[#68cbe2]"
-              descriptionClassName="text-tech-subtext"
-            >
+            />
+            <div className="min-h-[300px] sm:min-h-[360px] xl:col-span-12 xl:row-start-4 xl:min-h-[420px] rounded-[12px] overflow-hidden">
               <img
-                src="/techfest/merch.jpeg"
+                src={merchImage}
                 alt="TechFest 5.0 branded T-shirts"
-                className="absolute bottom-0 right-0 h-full w-full object-cover opacity-75 xl:w-[58%]"
+                className="w-full h-full object-contain"
                 loading="lazy"
               />
-            </ExpectCard>
+            </div>
           </div>
         </Shell>
 

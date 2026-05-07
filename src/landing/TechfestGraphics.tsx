@@ -369,3 +369,192 @@ export function MomentPlaceholderSvg({
     </svg>
   )
 }
+
+export function HackathonCard({ className = '' }: { className?: string }) {
+  return (
+    <div
+      className={`relative overflow-hidden rounded-2xl flex w-full max-w-full flex-col font-sans ${className}`}
+      style={{ background: 'linear-gradient(135deg,#131c27 0%,#0d1520 100%)' }}
+    >
+      {/* dot grid texture */}
+      <div
+        className="absolute inset-0 pointer-events-none z-0"
+        style={{
+          backgroundImage:
+            'radial-gradient(circle, rgba(165,203,229,0.07) 1px, transparent 1px)',
+          backgroundSize: '22px 22px',
+        }}
+      />
+
+      {/* header */}
+      <div className="relative z-10 px-5 pt-5 pb-0 sm:px-7">
+        <p
+          className="text-[10px] sm:text-[11px] font-bold tracking-[1.5px] uppercase mb-4"
+          style={{ color: '#a5cbe5' }}
+        >
+          Hackathon &amp; Ideation Session
+        </p>
+      </div>
+
+      {/* podium */}
+      <div className="relative z-10 flex-1 flex flex-col items-center gap-3 px-5 pb-5 sm:flex-row sm:items-end sm:justify-center sm:gap-6 sm:px-7">
+        <PodiumCol
+          className="w-full sm:w-auto"
+          prize="N50K"
+          rank="2nd"
+          blockHeight="h-[150px] sm:h-[170px]"
+          blockColor="#e9c0ce"
+          textColor="#5a1e35"
+          ribbonA="#e63946"
+          ribbonB="#f4a261"
+        />
+        <PodiumCol
+          className="w-full sm:w-auto sm:mt-2"
+          prize="N100K"
+          rank="1st"
+          blockHeight="h-[190px] sm:h-[220px]"
+          blockColor="#18c9a3"
+          textColor="#063d2e"
+          ribbonA="#1565c0"
+          ribbonB="#64b5f6"
+          prizeLarge
+        />
+        <PodiumCol
+          className="w-full sm:w-auto"
+          prize="N30K"
+          rank="3rd"
+          blockHeight="h-[130px] sm:h-[140px]"
+          blockColor="#60b8d4"
+          textColor="#0a3447"
+          ribbonA="#9e9e9e"
+          ribbonB="#e0e0e0"
+        />
+      </div>
+    </div>
+  )
+}
+
+export function GamesCard({
+  vrImage,
+  className = '',
+}: {
+  vrImage: string
+  className?: string
+}) {
+  return (
+    <article
+      className={`group relative min-w-0 overflow-hidden rounded-[12px] ring-1 ring-black/15 flex flex-col justify-end ${className}`}
+    >
+      <img
+        src={vrImage}
+        alt=""
+        aria-hidden
+        loading="lazy"
+        decoding="async"
+        className="absolute inset-0 h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-[1.04]"
+        style={{ filter: 'brightness(0.68) saturate(1.15)' }}
+      />
+
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background:
+            'linear-gradient(to bottom, rgba(28,6,10,0.62) 0%, rgba(28,6,10,0.08) 38%, rgba(28,6,10,0.0) 52%, rgba(28,6,10,0.9) 100%)',
+        }}
+      />
+
+      <div className="absolute top-4 right-4 z-10 rounded-lg border border-[rgba(220,60,80,0.45)] bg-[rgba(220,60,80,0.18)] px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-[#ff8a9a] backdrop-blur-sm select-none">
+        Live at TechFest
+      </div>
+
+      <div className="relative z-10 p-5 sm:p-7">
+        <div className="mb-3 inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-[1.4px] text-white/85 backdrop-blur-sm">
+          Entertainment
+        </div>
+        <h3 className="text-[clamp(1.1rem,2.8vw,1.4rem)] font-bold uppercase leading-[1.15] tracking-[-0.01em] text-[#df93a9]">
+          Games &amp; Entertainment
+        </h3>
+        <p className="mt-2 text-[0.8125rem] leading-relaxed text-white/75 sm:mt-3 sm:text-sm sm:leading-[1.6]">
+          Enjoy fun games and interactive experiences in one lively, high-energy space.
+        </p>
+      </div>
+    </article>
+  )
+}
+
+function MedalSvg({
+  rank,
+  ribbonA,
+  ribbonB,
+}: {
+  rank: string
+  ribbonA: string
+  ribbonB: string
+}) {
+  return (
+    <svg width="52" height="52" viewBox="0 0 52 52" xmlns="http://www.w3.org/2000/svg">
+      <rect x="19" y="0" width="6" height="20" rx="2" fill={ribbonA} transform="rotate(-10 22 10)" />
+      <rect x="27" y="0" width="6" height="20" rx="2" fill={ribbonB} transform="rotate(10 30 10)" />
+      <circle cx="26" cy="34" r="16" fill="#f5c842" />
+      <circle cx="26" cy="34" r="11" fill="none" stroke="#e6a800" strokeWidth="1.5" />
+      <circle cx="26" cy="34" r="7" fill="#ffd84d" />
+      <text
+        x="26"
+        y="38"
+        textAnchor="middle"
+        fontSize="9"
+        fontWeight="800"
+        fill="#7a4800"
+        fontFamily="system-ui, sans-serif"
+      >
+        {rank}
+      </text>
+    </svg>
+  )
+}
+
+function PodiumCol({
+  prize,
+  rank,
+  blockHeight,
+  blockColor,
+  textColor,
+  ribbonA,
+  ribbonB,
+  prizeLarge = false,
+  className = '',
+}: {
+  prize: string
+  rank: string
+  blockHeight: string
+  blockColor: string
+  textColor: string
+  ribbonA: string
+  ribbonB: string
+  prizeLarge?: boolean
+  className?: string
+}) {
+  return (
+    <div className={`w-full sm:w-auto max-w-[140px] flex flex-col items-center ${className}`}>
+      <p
+        className={`font-black text-white mb-2 tracking-tight ${prizeLarge ? 'text-[15px] sm:text-lg' : 'text-[13px] sm:text-[15px]'}`}
+      >
+        {prize}
+      </p>
+      <div className="-mb-3.5 z-10 relative">
+        <MedalSvg rank={rank} ribbonA={ribbonA} ribbonB={ribbonB} />
+      </div>
+      <div
+        className={`w-full ${blockHeight} rounded-t-xl flex flex-col items-center justify-end pb-5`}
+        style={{ background: blockColor }}
+      >
+        <p className="text-[15px] font-bold mb-0.5" style={{ color: textColor }}>
+          {rank}
+        </p>
+        <p className="text-[12px] font-normal" style={{ color: textColor, opacity: 0.75 }}>
+          Position
+        </p>
+      </div>
+    </div>
+  )
+}
