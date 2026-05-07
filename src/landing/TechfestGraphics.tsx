@@ -389,7 +389,7 @@ export function HackathonCard({ className = '' }: { className?: string }) {
       {/* header */}
       <div className="relative z-10 px-5 pt-5 pb-0 sm:px-7">
         <p
-          className="text-[10px] sm:text-[11px] font-bold tracking-[1.5px] uppercase mb-4"
+          className="text-[10px] sm:text-[11px] tracking-[1.5px] uppercase mb-4"
           style={{ color: '#a5cbe5' }}
         >
           Hackathon &amp; Ideation Session
@@ -397,22 +397,22 @@ export function HackathonCard({ className = '' }: { className?: string }) {
       </div>
 
       {/* podium */}
-      <div className="relative z-10 flex-1 flex flex-col items-center gap-3 px-5 pb-5 sm:flex-row sm:items-end sm:justify-center sm:gap-6 sm:px-7">
+      <div className="relative z-10 flex-1 flex flex-row items-end justify-center gap-2 px-3 pb-0 sm:gap-6 sm:px-7">
         <PodiumCol
-          className="w-full sm:w-auto"
+          className="w-1/3 sm:w-auto"
           prize="N50K"
           rank="2nd"
-          blockHeight="h-[150px] sm:h-[170px]"
+          blockHeight="h-[100px] sm:h-[170px]"
           blockColor="#e9c0ce"
           textColor="#5a1e35"
           ribbonA="#e63946"
           ribbonB="#f4a261"
         />
         <PodiumCol
-          className="w-full sm:w-auto sm:mt-2"
+          className="w-1/3 sm:w-auto sm:mt-2"
           prize="N100K"
           rank="1st"
-          blockHeight="h-[190px] sm:h-[220px]"
+          blockHeight="h-[130px] sm:h-[220px]"
           blockColor="#18c9a3"
           textColor="#063d2e"
           ribbonA="#1565c0"
@@ -420,10 +420,10 @@ export function HackathonCard({ className = '' }: { className?: string }) {
           prizeLarge
         />
         <PodiumCol
-          className="w-full sm:w-auto"
+          className="w-1/3 sm:w-auto"
           prize="N30K"
           rank="3rd"
-          blockHeight="h-[130px] sm:h-[140px]"
+          blockHeight="h-[80px] sm:h-[140px]"
           blockColor="#60b8d4"
           textColor="#0a3447"
           ribbonA="#9e9e9e"
