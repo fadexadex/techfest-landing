@@ -9,7 +9,7 @@ const teamCards = [
   { name: 'Mr. Sam', role: 'Staff Advisor', image: '/techfest/team/Mr-Sam.png' },
   { name: 'Akinwale Aremu', role: 'President', image: '/techfest/team/Akinwale-Aremu.png' },
   { name: 'Bolujo Joseph', role: 'Vice President', image: '/techfest/team/Bolujo-Joseph.png' },
-  { name: 'Ayomide Arimoro', role: 'President', image: '/techfest/team/Ayomide-Arimoro.png' },
+  { name: 'Ayomide Arimoro', role: 'General Secretary', image: '/techfest/team/Ayomide-Arimoro.png' },
   { name: 'Blossom Ubochi', role: 'Public Relations Officer', image: '/techfest/team/Blossom-Ubochi.png' },
   { name: 'Ifeoluwa Omidire', role: 'Programs & Strategy Lead', image: '/techfest/team/Omidire-Ifeoluwa.png' },
   { name: 'Emmanuel Latunde', role: 'Partnership Lead', image: '/techfest/team/Latunde-Emmanuel.png' },
