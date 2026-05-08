@@ -27,50 +27,25 @@ const aboutStats = [
 
 const speakerCards = [
   {
-    name: 'John Doe',
-    role: 'AI Specialist',
-    topic: 'Topic: Leveraging The Power Of AI',
+    name: 'Godbless Peter',
+    role: 'Technical Director',
+    topic: 'Topic: AI in Cyber Security',
     accent: 'from-[#3e546a] to-[#141a20]',
+    image: '/techfest/godbless peter(technical director).png',
   },
   {
-    name: 'Doe John',
-    role: 'Managing Director, OOP',
-    topic: 'Topic: Staying Relevant Today',
+    name: 'Adewale Sulaiman',
+    role: 'Founder, CEO, Xava Technologies',
+    topic: 'Topic: Building a Startup in Africa',
     accent: 'from-[#536f86] to-[#1a2330]',
+    image: '/techfest/ADEWALE Sulaiman(founder,ceo, xava technologies).png',
   },
   {
-    name: 'Elijah Brown',
-    role: 'UX Designer',
-    topic: 'Topic: Beyond Design',
+    name: 'Dara Sobaloju',
+    role: 'AI-native Engineer',
+    topic: 'Topic: AI-native Engineering',
     accent: 'from-[#4d5d68] to-[#161d23]',
-  },
-  {
-    name: 'Abayomi Abiodun',
-    role: 'Panelist',
-    topic: 'Topic: Leveraging The Power Of AI',
-    accent: 'from-[#5a7e8b] to-[#172228]',
-    image: '/techfest/Abayomi Abiodun.jpeg',
-  },
-  {
-    name: 'Laja',
-    role: 'Panelist',
-    topic: 'Topic: Staying Relevant Today',
-    accent: 'from-[#4b6983] to-[#182029]',
-    image: '/techfest/Laja.jpeg',
-  },
-  {
-    name: 'Israel',
-    role: 'Panelist',
-    topic: 'Topic: Beyond Design',
-    accent: 'from-[#7e6558] to-[#201a18]',
-    image: '/techfest/Israel.jpeg',
-  },
-  {
-    name: 'Eve Chukuma',
-    role: 'Panelist',
-    topic: 'Topic: Innovation & Growth',
-    accent: 'from-[#6b5a8b] to-[#1a1628]',
-    image: '/techfest/eve_chukuma.jpg',
+    image: '/techfest/Dara sobaloju(AI-native engineer).png',
   },
 ]
 
